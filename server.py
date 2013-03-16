@@ -9,9 +9,17 @@ from util import *
 @route('/')
 @view('main_template')
 def main():
-    random_wiki = "http://en.wikipedia.org/wiki/Artificial_intelligence"
+    random_wiki = "http://www.google.com"
     html = urllib2.urlopen(random_wiki).read()
     return dict(title="Welcome to Wikipedia Golf!", html=html)
+
+@route("/wiki-html")
+@view('main_template')
+def wiki_html():
+    random_wiki = "http://en.wikipedia.org/wiki/Canadian_Arctic_Archipelago"
+    req = urllib2.Request(random_wiki, headers={'User-Agent' : "Magic Browser"})
+    con = urllib2.urlopen(req)
+    return con.read()
 
 """ The next three methods are used to serve static files. """
 @get('/<filename:re:.*\.js>')
