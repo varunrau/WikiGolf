@@ -1,8 +1,29 @@
 .wiki-container {
+}
+
+.main-col {
     width: 50%;
     border-style: solid;
-    display: block;
     margin-left: auto;
     margin-right: auto;
     position: relative;
 }
+
+.left-col {
+    float: left;
+    width: 25%;
+    border-style: solid;
+    padding-right: 10px;
+}
+
+.depth {
+    text-align: center;
+}
+
+.right-col {
+    float: right;
+    width: 25%;
+    border-style: solid;
+    padding-left: 10px;
+}
+
