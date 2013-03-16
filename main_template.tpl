@@ -8,10 +8,13 @@
             Depth:
             <span class='depth-num'>3</span>
         </div>
+        <div class='visited-nodes'>
+            <ul class="node-list">
+            </ul>
+        </div>
     </div>
     <div class='wiki-container main-col'>
     </div>
     <div class='right-col'>
-    hi
     </div>
 </div>
