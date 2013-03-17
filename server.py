@@ -1,4 +1,5 @@
 #!/usr/bin/python
+
 from bottle import *
 from BeautifulSoup import BeautifulSoup, SoupStrainer
 import httplib2
@@ -16,15 +17,14 @@ def main():
 @get("/wiki-html")
 def wiki_html():
     random_wiki = "http://en.wikipedia.org/wiki/Google"
+    start = "/wiki/Google"
     end_wiki = "/wiki/Coffee"
     req = urllib2.Request(random_wiki, headers={'User-Agent' : "Magic Browser"})
     con = urllib2.urlopen(req)
     html = con.read()
     soup = BeautifulSoup(html)
     [s.extract() for s in soup.findAll('script')]
-    data = {}
-    data['html'] = str(soup)
-    data['end_node'] = end_wiki
+    data = {'html': str(soup), 'start_node': start, 'end_node': end_wiki}
     return data
 
 @post("/wiki-html")

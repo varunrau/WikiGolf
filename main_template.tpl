@@ -1,5 +1,6 @@
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="main.js"></script>
+<script src="http://cdn.peerjs.com/0/peer.js"></script>
 <link href="main.css" rel="stylesheet" type="text/css">
 
 <div class='grid'>

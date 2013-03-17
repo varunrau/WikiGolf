@@ -4,6 +4,42 @@ $(document).ready(function() {
     var end_node = null;
     $('.depth-num').text(depth);
 
+    var conn;
+    // Connect to PeerJS, get key_val from server
+    var peer = new Peer({key: key_val, debug: true});
+    peer.on('open', function(id) {
+        console.log(id);
+    }
+
+    peer.on('connection', function(c) {
+        conn = c;
+
+        // The person we are connecting to is conn.peer
+        console.log(conn.peer);
+
+        conn.on('data', function(data) {
+            console.log(data);
+        });
+
+        conn.on('close', function(err) {
+            alert(conn.peer + ' has left the server thing');
+        });
+
+    });
+
+    $('.back').click(function(e) {
+        console.log('hi')
+        if (nodes.length > 0) {
+            // Remove the node we are currently on
+            nodes.pop();
+            linkClicked(e, nodes[nodes.length - 1], true);
+            updateNodes();
+            depth -= 2;
+            console.log('depth is ' + depth);
+            $('.depth-num').text(depth);
+        }
+    });
+
     // Get the first page
     // Get the page we are supposed to end at.
     $.ajax({
@@ -11,17 +47,14 @@ $(document).ready(function() {
         type: "GET",
         success: function(data) {
             $('.wiki-container').html(data['html']);
+            nodes.push(data['start_node']);
+            updateNodes();
             end_node = data['end_node'];
             $("a").click(function(e) {
-                if ($(this).hasClass('back')) {
-                    linkClicked(e, nodes.pop());
-                } else {
-                    disableClicks(e);
-                }
-
+                disableClicks(e);
                 // If we haven't clicked on this before
                 if ($.inArray($(this).attr('href'), nodes) === -1) {
-                    linkClicked(e, $(this).attr('href'));
+                    linkClicked(e, $(this).attr('href'), true);
                     nodes.push($(this).attr('href'));
                     updateNodes();
                 } else {
@@ -42,13 +75,14 @@ $(document).ready(function() {
     // When a link is clicked we want to move to the new link and
     // increment our depth
     var linkClicked = function(e, loc, update) {
-        depth++;
-        $('.depth-num').text(depth);
-        console.log($(this).attr("href"));
-        console.log($(this).hasClass('sidebar'));
-        if (loc == end_node) {
-            displayWin();
+        if (update) {
+            depth++;
+            $('.depth-num').text(depth);
+            if (loc == end_node) {
+                displayWin();
+            }
         }
+        console.log('loc is ' + loc);
         $.ajax({
             url: "wiki-html",
             type: "POST",
@@ -58,7 +92,7 @@ $(document).ready(function() {
                 $("a").click(function(e) {
                     disableClicks(e);
                     if ($.inArray($(this).attr('href'), nodes) === -1) {
-                        linkClicked(e, $(this).attr('href'));
+                        linkClicked(e, $(this).attr('href'), true);
                         if (update) {
                             nodes.push($(this).attr('href'));
                             updateNodes();
