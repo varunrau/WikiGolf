@@ -3,6 +3,9 @@
 <link href="main.css" rel="stylesheet" type="text/css">
 
 <div class='grid'>
+    <div class='top'>
+        <button class='back' type="button">Back</button>
+    </div>
     <div class='left-col'>
         <div class='depth'>
             Depth:

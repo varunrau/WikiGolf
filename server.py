@@ -16,12 +16,16 @@ def main():
 @get("/wiki-html")
 def wiki_html():
     random_wiki = "http://en.wikipedia.org/wiki/Google"
+    end_wiki = "/wiki/Coffee"
     req = urllib2.Request(random_wiki, headers={'User-Agent' : "Magic Browser"})
     con = urllib2.urlopen(req)
     html = con.read()
     soup = BeautifulSoup(html)
     [s.extract() for s in soup.findAll('script')]
-    return str(soup)
+    data = {}
+    data['html'] = str(soup)
+    data['end_node'] = end_wiki
+    return data
 
 @post("/wiki-html")
 def wiki_html():
