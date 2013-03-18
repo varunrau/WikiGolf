@@ -5,18 +5,40 @@ $(document).ready(function() {
     $('.depth-num').text(depth);
 
     var conn;
-    // Connect to PeerJS, get key_val from server
-    var peer = new Peer({key: key_val, debug: true});
+    // Connect to PeerJS, the key is the API key
+    // The id should come from the server
+
+    var peerid = ''
+
+    // Get the peerid from the server
+    $.ajax({
+        url: "get-peerid",
+        type: "GET",
+        success: function(data) {
+            peerid = data;
+        },
+        error: function(e) {
+            console.log('Received error from server: ' + e);
+        }
+    });
+
+    var peer = new Peer(peerid , {key: 'zmnov4fauusxajor', debug: true});
+
+    // This will be the peer we're connecting to
     peer.on('open', function(id) {
         console.log(id);
     }
 
-    peer.on('connection', function(c) {
+    // Listen for incoming connections
+    peer.on('connection', connect);
+
+    var connnect = function(c) {
         conn = c;
 
         // The person we are connecting to is conn.peer
         console.log(conn.peer);
 
+        // The data that is sent from the other peer
         conn.on('data', function(data) {
             console.log(data);
         });
@@ -24,8 +46,8 @@ $(document).ready(function() {
         conn.on('close', function(err) {
             alert(conn.peer + ' has left the server thing');
         });
-
     });
+
 
     $('.back').click(function(e) {
         console.log('hi')
