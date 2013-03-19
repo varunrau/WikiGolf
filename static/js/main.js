@@ -79,7 +79,7 @@ $(document).ready(function() {
             console.log('depth is ' + depth);
             $('.depth-num').text(depth);
             conn.on('open', function() {
-                conn.send({"oppDepth": depth});
+                updateDepth(depth);
             });
         }
     });
@@ -118,9 +118,7 @@ $(document).ready(function() {
     var linkClicked = function(e, loc, update) {
         if (update) {
             depth++;
-            $('.depth-num').text(depth);
-            // Send the new depth to the opponent
-            conn.send({"oppDepth": depth});
+            updateDepth(depth);
             if (loc == end_node) {
                 displayWin();
             }
@@ -177,8 +175,7 @@ $(document).ready(function() {
             }
         });
         depth = $(this).index();
-        $('.depth-num').text(depth);
-        conn.send({"oppDepth": depth});
+        updateDepth(depth);
         nodes.splice(depth + 1, nodes.length - depth);
         updateNodes();
     };
@@ -198,5 +195,11 @@ $(document).ready(function() {
         conn.send(data);
         alert('You made it in ' + depth + ' moves!');
     };
+
+    var updateDepth = function(d) {
+        $('.depth-num').text(d);
+        conn.send({"oppDepth": d});
+    };
+
 
 });
