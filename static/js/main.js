@@ -10,6 +10,16 @@ $(document).ready(function() {
         }
     };
 
+    var updateNodes = function() {
+        $('.node-list').empty();
+        $.each(nodes, function() {
+            clicked_link = this.toString();
+            var split_arr = clicked_link.split("/");
+            var clicked_link_name = split_arr[2];
+            $('.node-list').append($('<li>').append("<a class='sidebar' href='" + clicked_link + "'>" + clicked_link_name + "</a>"));
+        });
+    };
+
     updateDepth(depth, false);
     $('.opp-depth-text').text('Waiting for connection...');
 
@@ -42,16 +52,22 @@ $(document).ready(function() {
         });
     };
 
-    // Get the peerid from the server
+    // Get the first page
+    // Get the page we are supposed to end at.
     $.ajax({
-        url: "peerid",
+        url: "wiki-html",
         type: "GET",
         async: false,
         success: function(data) {
+            $('.wiki-container').html(data['html']);
+            nodes.push(data['start_node']);
+            updateNodes();
+            end_node = data['end_node'];
             var peerid = data['peerid'];
             peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: false});
             peer.on('connection', connect);
             if (data['partnerid']) {
+                console.log('connected to partner');
                 var c = peer.connect(data['partnerid']);
                 c.on('open', function() {
                     connect(c);
@@ -59,17 +75,23 @@ $(document).ready(function() {
                 c.on('error', function(err) {
                     console.log(err);
                 });
-
-                // Listen for incoming connections
                 peer.on('connection', connect);
             }
+            $("a").click(function(e) {
+                disableClicks(e);
+                // If we haven't clicked on this before
+                if ($.inArray($(this).attr('href'), nodes) === -1) {
+                    linkClicked(e, $(this).attr('href'), true);
+                    nodes.push($(this).attr('href'));
+                    updateNodes();
+                }
+            });
         },
         error: function(e) {
-            console.log('Received error from server: ' + e);
+            console.log('something went wrong server side');
         }
     });
-
-
+    console.log('hi again');
 
     $('.back').click(function(e) {
         console.log('hi')
@@ -84,31 +106,6 @@ $(document).ready(function() {
             conn.on('open', function() {
                 updateDepth(depth, true);
             });
-        }
-    });
-
-    // Get the first page
-    // Get the page we are supposed to end at.
-    $.ajax({
-        url: "wiki-html",
-        type: "GET",
-        success: function(data) {
-            $('.wiki-container').html(data['html']);
-            nodes.push(data['start_node']);
-            updateNodes();
-            end_node = data['end_node'];
-            $("a").click(function(e) {
-                disableClicks(e);
-                // If we haven't clicked on this before
-                if ($.inArray($(this).attr('href'), nodes) === -1) {
-                    linkClicked(e, $(this).attr('href'), true);
-                    nodes.push($(this).attr('href'));
-                    updateNodes();
-                }
-            });
-        },
-        error: function(e) {
-            console.log('something went wrong server side');
         }
     });
 
@@ -183,15 +180,6 @@ $(document).ready(function() {
         updateNodes();
     };
 
-    var updateNodes = function() {
-        $('.node-list').empty();
-        $.each(nodes, function() {
-            clicked_link = this.toString();
-            var split_arr = clicked_link.split("/");
-            var clicked_link_name = split_arr[2];
-            $('.node-list').append($('<li>').append("<a class='sidebar' href='" + clicked_link + "'>" + clicked_link_name + "</a>"));
-        });
-    };
 
     var displayWin = function() {
         var data = {"oppWin": nodes};

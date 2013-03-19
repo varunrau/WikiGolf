@@ -7,6 +7,7 @@ import urllib2
 import re
 import uuid
 from util import *
+from peer import *
 
 inactive_peers = []
 
@@ -19,17 +20,54 @@ def main():
 
 @get("/wiki-html")
 def wiki_html():
-    random_wiki = "http://en.wikipedia.org/wiki/Google"
-    start = "/wiki/Google"
-    end_wiki = "/wiki/Coffee"
-    req = urllib2.Request(random_wiki, headers={'User-Agent' : "Magic Browser"})
+    new_peer = str(uuid.uuid4())
+    data = {"peerid": new_peer}
+    if len(inactive_peers) > 0:
+        partner = inactive_peers.pop(0)
+        req = urllib2.Request('http://en.wikipedia.org' + partner.start_node, headers={'User-Agent' : 'Magic Browser'})
+        con = urllib2.urlopen(req)
+        html = con.read()
+        soup = strip_soup(BeautifulSoup(html))
+        html = str(soup)
+        data['html'] = html
+        data['start_node'] = partner.start_node
+        data['end_node'] = partner.end_node
+        data['partnerid'] = partner.getId()
+    else:
+        start = get_random_wiki()
+        start = urllib2.quote(start.encode('utf-8'))
+        end = get_random_wiki()
+        req = urllib2.Request("http://en.wikipedia.org" + start, headers={'User-Agent' : "Magic Browser"})
+        con = urllib2.urlopen(req)
+        html = con.read()
+        soup = BeautifulSoup(html)
+        html = strip_soup(soup)
+        html = str(html)
+        inactive_peer = Peer(start, end, data['peerid'])
+        inactive_peers.append(inactive_peer)
+        data['html'] = html
+        data['start_node'] = start
+        data['end_node'] = end
+    return data
+
+"""
+    This function will return a random wikipedia page in the form of
+    /wiki/<WIKIPEDIA PAGE>
+"""
+def get_random_wiki():
+    random = "http://en.wikipedia.org/wiki/Special:Random"
+    req = urllib2.Request(random, headers={'User-Agent' : "Magic Browser"})
     con = urllib2.urlopen(req)
     html = con.read()
     soup = BeautifulSoup(html)
+    title_page = soup.title.string
+    wiki = title_page.split('-')
+    return "/wiki/" + wiki[0]
+
+def strip_soup(soup):
     [s.extract() for s in soup.findAll('script')]
     [s.extract() for s in soup.findAll('title')]
-    data = {'html': str(soup), 'start_node': start, 'end_node': end_wiki}
-    return data
+    return soup
 
 @post("/wiki-html")
 def wiki_html():
@@ -50,19 +88,19 @@ def wiki_html():
     else:
         return None
 
-""" User has logged in for the first time. Assign them a user id and put them on
-    a waiting list or give them a partner.
-"""
-@get('/peerid')
-def peerid():
-    # Generate random user id
-    new_peer = str(uuid.uuid4())
-    if len(inactive_peers) > 0:
-        print 'Connecting two peers together'
-        return {'peerid': new_peer, 'partnerid': inactive_peers.pop(0)}
-    else:
-        inactive_peers.append(new_peer)
-        return {'peerid': new_peer}
+#""" User has logged in for the first time. Assign them a user id and put them on
+#    a waiting list or give them a partner.
+#"""
+#@get('/peerid')
+#def peerid():
+#    # Generate random user id
+#    new_peer = str(uuid.uuid4())
+#    if len(inactive_peers) > 0:
+#        print 'Connecting two peers together'
+#        return {'peerid': new_peer, 'partnerid': inactive_peers.pop(0)}
+#    else:
+#        inactive_peers.append(new_peer)
+#        return {'peerid': new_peer}
 
 
 """ The next three methods are used to serve static files. """
