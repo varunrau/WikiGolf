@@ -84,3 +84,8 @@ div.navbar.fix-top {
 .depth {
     text-align: center;
 }
+
+.loading-icon {
+    width: auto;
+    text-align: center;
+}

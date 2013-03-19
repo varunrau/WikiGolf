@@ -151,5 +151,9 @@ def stylesheets(filename):
 def images(filename):
     return static_file(filename, root='static/images')
 
+@get('/<filename:re:.*\.gif>')
+def gifs(filename):
+    return static_file(filename, root='static/images')
+
 run(host='localhost', port=3000, debug=True)
 

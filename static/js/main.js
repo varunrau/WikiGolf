@@ -52,6 +52,14 @@ $(document).ready(function() {
         });
     };
 
+    $('.loading-icon').hide();
+    $(document).ajaxStart(function() {
+        console.log('showing');
+        $('.loading-icon').show();
+    });
+    $(document).ajaxStop(function() {
+        $('.loading-icon').hide();
+    });
     // Get the first page
     // Get the page we are supposed to end at.
     $.ajax({

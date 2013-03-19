@@ -51,9 +51,10 @@
                 <div class="bottom-right">
                     <div class='opp-depth'>
                         <span class='opp-depth-text'>Your Opponent's Current Depth:</span>
-                        <span class='opp-depth-num'>0</span>
+                        <span class='opp-depth-num'></span>
                     </div>
                 </div>
+                <span class='loading-icon'>Loading...</span>
             </div>
         </div>
     </body>
