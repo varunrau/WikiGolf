@@ -10,29 +10,10 @@ $(document).ready(function() {
 
     var peerid = ''
 
-    // Get the peerid from the server
-    $.ajax({
-        url: "get-peerid",
-        type: "GET",
-        success: function(data) {
-            peerid = data;
-        },
-        error: function(e) {
-            console.log('Received error from server: ' + e);
-        }
-    });
+    // The key is this app's api key. It may be worthwhile later to get this from the server later
+    var peer = null;
 
-    var peer = new Peer(peerid , {key: 'zmnov4fauusxajor', debug: true});
-
-    // This will be the peer we're connecting to
-    peer.on('open', function(id) {
-        console.log(id);
-    }
-
-    // Listen for incoming connections
-    peer.on('connection', connect);
-
-    var connnect = function(c) {
+    var connect = function(c) {
         conn = c;
 
         // The person we are connecting to is conn.peer
@@ -44,9 +25,45 @@ $(document).ready(function() {
         });
 
         conn.on('close', function(err) {
-            alert(conn.peer + ' has left the server thing');
+            console.log(conn.peer + ' has left the server thing');
         });
+    };
+
+    // Get the peerid from the server
+    $.ajax({
+        url: "peerid",
+        type: "GET",
+        async: false,
+        success: function(data) {
+            peerid = data['peerid'];
+            peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: true});
+            peer.on('connection', connect);
+            if (data['partnerid']) {
+                var c = peer.connect(data['partnerid']);
+                console.log('almost connected');
+                c.on('open', function() {
+                    connect(c);
+                });
+
+                c.on('error', function(err) {
+                    console.log(err);
+                });
+            }
+        },
+        error: function(e) {
+            console.log('Received error from server: ' + e);
+        }
     });
+
+
+    // This will be the peer we're connecting to
+    peer.on('open', function(id) {
+        console.log(id);
+    });
+
+    // Listen for incoming connections
+    peer.on('connection', connect);
+
 
 
     $('.back').click(function(e) {
