@@ -60,7 +60,7 @@ $(document).ready(function() {
         async: false,
         success: function(data) {
             $('.wiki-container').html(data['html']);
-            nodes.push(data['start_node']);
+            nodes.push(data['title']);
             updateNodes();
             end_node = data['end_node'];
             var peerid = data['peerid'];

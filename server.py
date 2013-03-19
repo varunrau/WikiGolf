@@ -31,11 +31,12 @@ def wiki_html():
         html = str(soup)
         data['html'] = html
         data['start_node'] = partner.start_node
+        data['title'] = partner.title
         data['end_node'] = partner.end_node
         data['partnerid'] = partner.getId()
     else:
-        start = get_random_wiki()
-        start = urllib2.quote(start.encode('utf-8'))
+        start_title = get_random_wiki()
+        start = urllib2.quote(start_title.encode('utf-8'))
         end = get_random_wiki()
         req = urllib2.Request("http://en.wikipedia.org" + start, headers={'User-Agent' : "Magic Browser"})
         con = urllib2.urlopen(req)
@@ -43,11 +44,12 @@ def wiki_html():
         soup = BeautifulSoup(html)
         html = strip_soup(soup)
         html = str(html)
-        inactive_peer = Peer(start, end, data['peerid'])
+        inactive_peer = Peer(start, end, data['peerid'], start_title)
         inactive_peers.append(inactive_peer)
         data['html'] = html
         data['start_node'] = start
         data['end_node'] = end
+        data['title'] = start_title
     return data
 
 """
