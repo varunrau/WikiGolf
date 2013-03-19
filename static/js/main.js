@@ -59,7 +59,6 @@ $(document).ready(function() {
         }
     });
 
-
     // This will be the peer we're connecting to
     peer.on('open', function(id) {
         console.log(id);
