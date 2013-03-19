@@ -34,6 +34,8 @@ def wiki_html():
         data['title'] = partner.title
         data['end_node'] = partner.end_node
         data['partnerid'] = partner.getId()
+        data['end_title'] = partner.end_title
+        print 'connecting to partner'
     else:
         start_title = get_random_wiki()
         start = urllib2.quote(start_title.encode('utf-8'))
@@ -44,13 +46,36 @@ def wiki_html():
         soup = BeautifulSoup(html)
         html = strip_soup(soup)
         html = str(html)
-        inactive_peer = Peer(start, end, data['peerid'], start_title)
+        inactive_peer = Peer(start, end, data['peerid'], start_title, get_title(end))
         inactive_peers.append(inactive_peer)
         data['html'] = html
         data['start_node'] = start
         data['end_node'] = end
         data['title'] = start_title
+        data['end_title'] = get_title(end)
     return data
+
+@post("/get-html")
+def get_html():
+    key_list = [key for key in request.POST]
+    print key_list
+    val = None
+    if len(key_list) > 0:
+        val = key_list[0]
+    if val:
+        wiki = "http://en.wikipedia.org" + val
+        req = urllib2.Request(wiki, headers={'User-Agent' : "Magic Browser"})
+        con = urllib2.urlopen(req)
+        html = con.read()
+        soup = BeautifulSoup(html)
+        [s.extract() for s in soup.findAll('script')] # remove all scripts
+        [s.extract() for s in soup.findAll('style')]
+        [s.extract() for s in soup.findAll('link')]
+        [s.extract() for s in soup.findAll('title')]
+        return str(soup)
+    else:
+        return None
+
 
 """
     This function will return a random wikipedia page in the form of
@@ -65,6 +90,10 @@ def get_random_wiki():
     title_page = soup.title.string
     wiki = title_page.split('-')
     return "/wiki/" + wiki[0]
+
+def get_title(string):
+    vals = string.split("/wiki/")
+    return vals[0]
 
 def strip_soup(soup):
     [s.extract() for s in soup.findAll('script')]

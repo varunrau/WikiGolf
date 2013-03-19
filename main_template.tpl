@@ -35,6 +35,9 @@
             <div class="wiki-container">
             </div>
             <div class="game-info">
+                <h4 class='goal-node'>
+                    HI GAIZ
+                </h4>
                 <div class="top-right">
                     <div class"'depth">
                         Your Depth:

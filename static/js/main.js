@@ -66,8 +66,9 @@ $(document).ready(function() {
             var peerid = data['peerid'];
             peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: false});
             peer.on('connection', connect);
+            $('.goal-node').text("Goal: " + data['end_node']);
             if (data['partnerid']) {
-                console.log('connected to partner');
+                end_title = data['end_title'];
                 var c = peer.connect(data['partnerid']);
                 c.on('open', function() {
                     connect(c);
@@ -153,7 +154,7 @@ $(document).ready(function() {
         var nodeClicked = $(this).children('a').eq(0).attr('href');
         console.log(nodeClicked);
         $.ajax({
-            url: "wiki-html",
+            url: "get-html",
             type: "POST",
             data: nodeClicked,
             success: function(data) {
