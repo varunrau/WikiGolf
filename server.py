@@ -27,6 +27,8 @@ def wiki_html():
     html = con.read()
     soup = BeautifulSoup(html)
     [s.extract() for s in soup.findAll('script')]
+    [s.extract() for s in soup.findAll('style')]
+    [s.extract() for s in soup.findAll('link')]
     [s.extract() for s in soup.findAll('title')]
     data = {'html': str(soup), 'start_node': start, 'end_node': end_wiki}
     return data
@@ -45,6 +47,8 @@ def wiki_html():
         html = con.read()
         soup = BeautifulSoup(html)
         [s.extract() for s in soup.findAll('script')] # remove all scripts
+        [s.extract() for s in soup.findAll('style')]
+        [s.extract() for s in soup.findAll('link')]
         [s.extract() for s in soup.findAll('title')]
         return str(soup)
     else:
