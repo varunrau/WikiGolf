@@ -24,6 +24,7 @@ div.navbar {
     position: absolute;
     bottom: 0;
     margin: 0;
+    height: 43px;
 }
 
 div.navbar.fix-top {
