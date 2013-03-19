@@ -27,6 +27,7 @@ def wiki_html():
     html = con.read()
     soup = BeautifulSoup(html)
     [s.extract() for s in soup.findAll('script')]
+    [s.extract() for s in soup.findAll('title')]
     data = {'html': str(soup), 'start_node': start, 'end_node': end_wiki}
     return data
 
@@ -44,6 +45,7 @@ def wiki_html():
         html = con.read()
         soup = BeautifulSoup(html)
         [s.extract() for s in soup.findAll('script')] # remove all scripts
+        [s.extract() for s in soup.findAll('title')]
         return str(soup)
     else:
         return None
@@ -56,6 +58,7 @@ def peerid():
     # Generate random user id
     new_peer = str(uuid.uuid4())
     if len(inactive_peers) > 0:
+        print 'Connecting two peers together'
         return {'peerid': new_peer, 'partnerid': inactive_peers.pop(0)}
     else:
         inactive_peers.append(new_peer)

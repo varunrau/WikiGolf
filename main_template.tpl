@@ -9,8 +9,8 @@
     </div>
     <div class='left-col'>
         <div class='depth'>
-            Depth:
-            <span class='depth-num'>3</span>
+            Your Depth:
+            <span class='depth-num'>0</span>
         </div>
         <div class='visited-nodes'>
             <ul class="node-list">
@@ -20,5 +20,9 @@
     <div class='wiki-container main-col'>
     </div>
     <div class='right-col'>
+        <div class='opp-depth'>
+            <span class='opp-depth-text'>Your Opponent's Current Depth:</span>
+            <span class='opp-depth-num'>0</span>
+        </div>
     </div>
 </div>

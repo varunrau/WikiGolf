@@ -2,7 +2,7 @@
 }
 
 .main-col {
-    width: 50%;
+    width: 70%;
     border-style: solid;
     margin-left: auto;
     margin-right: auto;
@@ -11,7 +11,7 @@
 
 .left-col {
     float: left;
-    width: 25%;
+    width: 15%;
     border-style: solid;
     padding-right: 10px;
 }
@@ -22,7 +22,7 @@
 
 .right-col {
     float: right;
-    width: 25%;
+    width: 15%;
     border-style: solid;
     padding-left: 10px;
 }

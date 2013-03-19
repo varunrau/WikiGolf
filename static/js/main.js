@@ -3,6 +3,7 @@ $(document).ready(function() {
     var nodes = new Array();
     var end_node = null;
     $('.depth-num').text(depth);
+    $('.opp-depth-text').text('Waiting for connection...');
 
     var conn;
     // Connect to PeerJS, the key is the API key
@@ -19,9 +20,18 @@ $(document).ready(function() {
         // The person we are connecting to is conn.peer
         console.log(conn.peer);
 
+        // We have connected to another person!
+        $('.opp-depth-text').text("Your Opponent's Depth:");
+
         // The data that is sent from the other peer
         conn.on('data', function(data) {
-            console.log(data);
+            if (data['oppDepth']) {
+                $('.opp-depth-num').text(data['oppDepth']);
+            }
+            if (data['oppWin']) {
+                alert('Your opponent has won :(' + data['oppWin']);
+                alert(data['oppWin']);
+            }
         });
 
         conn.on('close', function(err) {
@@ -36,7 +46,7 @@ $(document).ready(function() {
         async: false,
         success: function(data) {
             peerid = data['peerid'];
-            peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: true});
+            peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: false});
             peer.on('connection', connect);
             if (data['partnerid']) {
                 var c = peer.connect(data['partnerid']);
@@ -44,7 +54,6 @@ $(document).ready(function() {
                 c.on('open', function() {
                     connect(c);
                 });
-
                 c.on('error', function(err) {
                     console.log(err);
                 });
@@ -65,7 +74,6 @@ $(document).ready(function() {
     peer.on('connection', connect);
 
 
-
     $('.back').click(function(e) {
         console.log('hi')
         if (nodes.length > 0) {
@@ -76,6 +84,9 @@ $(document).ready(function() {
             depth -= 2;
             console.log('depth is ' + depth);
             $('.depth-num').text(depth);
+            conn.on('open', function() {
+                conn.send({"oppDepth": depth});
+            });
         }
     });
 
@@ -117,6 +128,9 @@ $(document).ready(function() {
         if (update) {
             depth++;
             $('.depth-num').text(depth);
+            console.log(conn);
+            // Send the new depth to the opponent
+            conn.send({"oppDepth": depth});
             if (loc == end_node) {
                 displayWin();
             }
@@ -156,6 +170,8 @@ $(document).ready(function() {
     };
 
     var displayWin = function() {
+        var data = {"oppWin": nodes};
+        conn.send(data);
         alert('You made it in ' + depth + ' moves!');
     };
 
