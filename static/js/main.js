@@ -6,11 +6,6 @@ $(document).ready(function() {
     $('.opp-depth-text').text('Waiting for connection...');
 
     var conn;
-    // Connect to PeerJS, the key is the API key
-    // The id should come from the server
-
-    var peerid = ''
-
     // The key is this app's api key. It may be worthwhile later to get this from the server later
     var peer = null;
 
@@ -45,7 +40,7 @@ $(document).ready(function() {
         type: "GET",
         async: false,
         success: function(data) {
-            peerid = data['peerid'];
+            var peerid = data['peerid'];
             peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: false});
             peer.on('connection', connect);
             if (data['partnerid']) {
@@ -107,9 +102,6 @@ $(document).ready(function() {
                     linkClicked(e, $(this).attr('href'), true);
                     nodes.push($(this).attr('href'));
                     updateNodes();
-                } else {
-                    // remove all nodes after this thing
-                    updateNodes();
                 }
             });
         },
@@ -128,7 +120,6 @@ $(document).ready(function() {
         if (update) {
             depth++;
             $('.depth-num').text(depth);
-            console.log(conn);
             // Send the new depth to the opponent
             conn.send({"oppDepth": depth});
             if (loc == end_node) {
@@ -152,11 +143,45 @@ $(document).ready(function() {
                         }
                     }
                 });
+                $(".node-list li").click(nodeItemClicked);
             },
             error: function(e) {
                 console.log('something went wrong server side');
             }
         });
+    };
+
+    var nodeItemClicked = function(e) {
+        console.log($(this).index() + ' is the index');
+        var nodeClicked = $(this).children('a').eq(0).attr('href');
+        console.log(nodeClicked);
+        $.ajax({
+            url: "wiki-html",
+            type: "POST",
+            data: nodeClicked,
+            success: function(data) {
+                console.log(data);
+                $('.wiki-container').html(data);
+                $("a").click(function(e) {
+                    disableClicks(e);
+                    // If we haven't clicked on this before
+                    if ($.inArray($(this).attr('href'), nodes) === -1) {
+                        linkClicked(e, $(this).attr('href'), true);
+                        nodes.push($(this).attr('href'));
+                        updateNodes();
+                    }
+                });
+                $(".node-list li").click(nodeItemClicked);
+            },
+            error: function(e) {
+                console.log('something went wrong server side');
+            }
+        });
+        depth = $(this).index();
+        $('.depth-num').text(depth);
+        conn.send({"oppDepth": depth});
+        nodes.splice(depth + 1, nodes.length - depth);
+        updateNodes();
     };
 
     var updateNodes = function() {
@@ -174,6 +199,5 @@ $(document).ready(function() {
         conn.send(data);
         alert('You made it in ' + depth + ' moves!');
     };
-
 
 });
