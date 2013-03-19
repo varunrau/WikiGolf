@@ -1,0 +1,991 @@
+.wiki-container dfn { font-style: inherit }
+sup,
+.wiki-container sub { line-height: 1em }
+.wiki-container #interwiki-completelist { font-weight: bold }
+.wiki-container body.page-Main_Page #ca-delete { display: none !important }
+.wiki-container body.page-Main_Page #mp-topbanner { clear: both }
+.wiki-container body.page-Main_Page .wbc-editpage { display: none }
+.wiki-container #toolbar {
+    height: 22px;
+    margin-bottom: 6px;
+}
+ol.references,
+div.reflist,
+.wiki-container div.refbegin {
+    font-size: 90%;
+    margin-bottom: 0.5em;
+}
+.wiki-container div.refbegin-100 { font-size: 100% }
+.wiki-container div.reflist ol.references {
+    font-size: 100%;
+    list-style-type: inherit;
+}
+ol.references li:target,
+sup.reference:target,
+.wiki-container span.citation:target { background-color: #DEF }
+.wiki-container sup.reference {
+    font-weight: normal;
+    font-style: normal;
+}
+.wiki-container span.brokenref { display: none }
+.wiki-container .citation { word-wrap: break-word }
+cite,
+.citation cite.article,
+.wiki-container .citation cite.contribution { font-style: inherit }
+.citation cite,
+.wiki-container .citation cite.periodical { font-style: italic }
+@media screen,handheld { 
+.wiki-container 	.citation *.printonly { display: none }
+}
+.wiki-container .flowlist ul {
+    overflow-x: hidden;
+    margin-left: 0em;
+    padding-left: 1.6em;
+}
+.wiki-container .flowlist ol {
+    overflow-x: hidden;
+    margin-left: 0em;
+    padding-left: 3.2em;
+}
+.wiki-container .flowlist dl { overflow-x: hidden }
+.skin-monobook .hlist dl,
+.skin-modern .hlist dl,
+.wiki-container .skin-vector .hlist dl { line-height: 1.5em }
+.hlist dl,
+.hlist ol,
+.wiki-container .hlist ul {
+    margin: 0;
+    padding: 0;
+}
+.hlist dd,
+.hlist dt,
+.wiki-container .hlist li {
+    margin: 0;
+    display: inline;
+    white-space: nowrap;
+}
+.hlist.hwrap dd,
+.hlist.hwrap dt,
+.wiki-container .hlist.hwrap li { white-space: normal }
+.hlist dl dl,
+.hlist dl ol,
+.hlist dl ul,
+.hlist ol dl,
+.hlist ol ol,
+.hlist ol ul,
+.hlist ul dl,
+.hlist ul ol,
+.wiki-container .hlist ul ul {
+    display: inline;
+    white-space: normal;
+}
+.wiki-container .hlist dt:after { content: ":" }
+.hlist dd:after,
+.wiki-container .hlist li:after {
+    content: " ·";
+    font-weight: bold;
+}
+.hlist dd:last-child:after,
+.hlist dt:last-child:after,
+.wiki-container .hlist li:last-child:after { content: none }
+.hlist dd.hlist-last-child:after,
+.hlist dt.hlist-last-child:after,
+.wiki-container .hlist li.hlist-last-child:after { content: none }
+.hlist dd dd:first-child:before,
+.hlist dd dt:first-child:before,
+.hlist dd li:first-child:before,
+.hlist dt dd:first-child:before,
+.hlist dt dt:first-child:before,
+.hlist dt li:first-child:before,
+.hlist li dd:first-child:before,
+.hlist li dt:first-child:before,
+.wiki-container .hlist li li:first-child:before {
+    content: "(";
+    font-weight: normal;
+}
+.hlist dd dd:last-child:after,
+.hlist dd dt:last-child:after,
+.hlist dd li:last-child:after,
+.hlist dt dd:last-child:after,
+.hlist dt dt:last-child:after,
+.hlist dt li:last-child:after,
+.hlist li dd:last-child:after,
+.hlist li dt:last-child:after,
+.wiki-container .hlist li li:last-child:after {
+    content: ")";
+    font-weight: normal;
+}
+.hlist dd dd.hlist-last-child:after,
+.hlist dd dt.hlist-last-child:after,
+.hlist dd li.hlist-last-child:after,
+.hlist dt dd.hlist-last-child:after,
+.hlist dt dt.hlist-last-child:after,
+.hlist dt li.hlist-last-child:after,
+.hlist li dd.hlist-last-child:after,
+.hlist li dt.hlist-last-child:after,
+.wiki-container .hlist li li.hlist-last-child:after {
+    content: ")";
+    font-weight: normal;
+}
+.wiki-container .hlist.hnum ol { counter-reset: list-item }
+.wiki-container .hlist.hnum ol > li { counter-increment: list-item }
+.wiki-container .hlist.hnum ol > li:before { content: counter(list-item) " " }
+.hlist.hnum dd ol > li:first-child:before,
+.hlist.hnum dt ol > li:first-child:before,
+.wiki-container .hlist.hnum li ol > li:first-child:before { content: "(" counter(list-item) " " }
+.wiki-container .plainlist ul {
+    line-height: inherit;
+    list-style: none none;
+    margin: 0;
+}
+.wiki-container .plainlist ul li { margin-bottom: 0 }
+.wiki-container .navbox {
+    border: 1px solid #aaa;
+    width: 100%;
+    margin: auto;
+    clear: both;
+    font-size: 88%;
+    text-align: center;
+    padding: 1px;
+}
+.navbox-inner,
+.wiki-container .navbox-subgroup { width: 100% }
+.navbox-group,
+.navbox-title,
+.wiki-container .navbox-abovebelow {
+    padding: 0.25em 1em;
+    line-height: 1.5em;
+    text-align: center;
+}
+.wiki-container th.navbox-group {
+    white-space: nowrap;
+    text-align: right;
+}
+.navbox,
+.wiki-container .navbox-subgroup { background: #fdfdfd }
+.wiki-container .navbox-list {
+    line-height: 1.8em;
+    border-color: #fdfdfd;
+}
+.navbox th,
+.wiki-container .navbox-title { background: #ccccff }
+.navbox-abovebelow,
+th.navbox-group,
+.wiki-container .navbox-subgroup .navbox-title { background: #ddddff }
+.navbox-subgroup .navbox-group,
+.wiki-container .navbox-subgroup .navbox-abovebelow { background: #e6e6ff }
+.wiki-container .navbox-even { background: #f7f7f7 }
+.wiki-container .navbox-odd { background: transparent }
+.wiki-container table.navbox + table.navbox { margin-top: -1px }
+.navbox .hlist td dl,
+.navbox .hlist td ol,
+.navbox .hlist td ul,
+.navbox td.hlist dl,
+.navbox td.hlist ol,
+.wiki-container .navbox td.hlist ul { padding: 0.125em 0 }
+ol + table.navbox,
+.wiki-container ul + table.navbox { margin-top: 0.5em }
+.wiki-container .navbar {
+    display: inline;
+    font-size: 88%;
+    font-weight: normal;
+}
+.wiki-container .navbar ul {
+    display: inline;
+    white-space: nowrap;
+}
+.wiki-container .navbar li { word-spacing: -0.125em }
+.wiki-container .navbar.mini li span { font-variant: small-caps }
+.wiki-container .infobox .navbar { font-size: 100% }
+.wiki-container .navbox .navbar {
+    display: block;
+    font-size: 100%;
+}
+.wiki-container .navbox-title .navbar {
+    float: left;
+    text-align: left;
+    margin-right: 0.5em;
+    width: 6em;
+}
+.wiki-container .collapseButton {
+    float: right;
+    font-weight: normal;
+    margin-left: 0.5em;
+    text-align: right;
+    width: auto;
+}
+.wiki-container .navbox .collapseButton { width: 6em }
+.wiki-container .mw-collapsible-toggle {
+    font-weight: normal;
+    text-align: right;
+}
+.wiki-container .navbox .mw-collapsible-toggle { width: 6em }
+.wiki-container .infobox {
+    border: 1px solid #aaa;
+    background-color: #f9f9f9;
+    color: black;
+    margin: 0.5em 0 0.5em 1em;
+    padding: 0.2em;
+    float: right;
+    clear: right;
+    text-align: left;
+    font-size: 88%;
+    line-height: 1.5em;
+}
+.wiki-container .infobox caption {
+    font-size: 125%;
+    font-weight: bold;
+}
+.infobox td,
+.wiki-container .infobox th { vertical-align: top }
+.wiki-container .infobox.bordered { border-collapse: collapse }
+.infobox.bordered td,
+.wiki-container .infobox.bordered th { border: 1px solid #aaa }
+.infobox.bordered .borderless td,
+.wiki-container .infobox.bordered .borderless th { border: 0 }
+.wiki-container .infobox.sisterproject {
+    width: 20em;
+    font-size: 90%;
+}
+.wiki-container .infobox.standard-talk {
+    border: 1px solid #c0c090;
+    background-color: #f8eaba;
+}
+.infobox.standard-talk.bordered td,
+.wiki-container .infobox.standard-talk.bordered th { border: 1px solid #c0c090 }
+.infobox.bordered .mergedtoprow td,
+.wiki-container .infobox.bordered .mergedtoprow th {
+    border: 0;
+    border-top: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+}
+.infobox.bordered .mergedrow td,
+.wiki-container .infobox.bordered .mergedrow th {
+    border: 0;
+    border-right: 1px solid #aaa;
+}
+.wiki-container .infobox.geography {
+    text-align: left;
+    border-collapse: collapse;
+    line-height: 1.2em;
+    font-size: 90%;
+}
+.infobox.geography td,
+.wiki-container .infobox.geography th {
+    border-top: 1px solid #aaa;
+    padding: 0.4em 0.6em 0.4em 0.6em;
+}
+.infobox.geography .mergedtoprow td,
+.wiki-container .infobox.geography .mergedtoprow th {
+    border-top: 1px solid #aaa;
+    padding: 0.4em 0.6em 0.2em 0.6em;
+}
+.infobox.geography .mergedrow td,
+.wiki-container .infobox.geography .mergedrow th {
+    border: 0;
+    padding: 0 0.6em 0.2em 0.6em;
+}
+.infobox.geography .mergedbottomrow td,
+.wiki-container .infobox.geography .mergedbottomrow th {
+    border-top: 0;
+    border-bottom: 1px solid #aaa;
+    padding: 0 0.6em 0.4em 0.6em;
+}
+.infobox.geography .maptable td,
+.wiki-container .infobox.geography .maptable th {
+    border: 0;
+    padding: 0;
+}
+.wiki-container .wikitable.plainrowheaders th[scope=row] {
+    font-weight: normal;
+    text-align: left;
+}
+.wikitable td ul,
+.wikitable td ol,
+.wiki-container .wikitable td dl { text-align: left }
+.wikitable.hlist td ul,
+.wikitable.hlist td ol,
+.wiki-container .wikitable.hlist td dl { text-align: inherit }
+.wiki-container div.listenlist {
+    background: url("//upload.wikimedia.org/wikipedia/commons/3/3f/Gnome_speakernotes_30px.png");
+    padding-left: 40px;
+}
+.wiki-container table.mw-hiero-table td { vertical-align: middle }
+.wiki-container div.medialist {
+    min-height: 50px;
+    margin: 1em;
+    background-position: top left;
+    background-repeat: no-repeat;
+}
+.wiki-container div.medialist ul {
+    list-style-type: none;
+    list-style-image: none;
+    margin: 0;
+}
+.wiki-container div.medialist ul li { padding-bottom: 0.5em }
+.wiki-container div.medialist ul li li {
+    font-size: 91%;
+    padding-bottom: 0;
+}
+div#content a[href$=".pdf"].external,
+div#content a[href*=".pdf?"].external,
+div#content a[href*=".pdf#"].external,
+div#content a[href$=".PDF"].external,
+div#content a[href*=".PDF?"].external,
+div#content a[href*=".PDF#"].external,
+div#mw_content a[href$=".pdf"].external,
+div#mw_content a[href*=".pdf?"].external,
+div#mw_content a[href*=".pdf#"].external,
+div#mw_content a[href$=".PDF"].external,
+div#mw_content a[href*=".PDF?"].external,
+.wiki-container div#mw_content a[href*=".PDF#"].external {
+    background: url("//upload.wikimedia.org/wikipedia/commons/2/23/Icons-mini-file_acrobat.gif") no-repeat right;
+    padding-right: 18px;
+}
+div#content span.PDFlink a,
+.wiki-container div#mw_content span.PDFlink a {
+    background: url("//upload.wikimedia.org/wikipedia/commons/2/23/Icons-mini-file_acrobat.gif") no-repeat right;
+    padding-right: 18px;
+}
+.wiki-container div.columns-2 div.column {
+    float: left;
+    width: 50%;
+    min-width: 300px;
+}
+.wiki-container div.columns-3 div.column {
+    float: left;
+    width: 33.3%;
+    min-width: 200px;
+}
+.wiki-container div.columns-4 div.column {
+    float: left;
+    width: 25%;
+    min-width: 150px;
+}
+.wiki-container div.columns-5 div.column {
+    float: left;
+    width: 20%;
+    min-width: 120px;
+}
+.wiki-container .messagebox {
+    border: 1px solid #aaa;
+    background-color: #f9f9f9;
+    width: 80%;
+    margin: 0 auto 1em auto;
+    padding: .2em;
+}
+.wiki-container .messagebox.merge {
+    border: 1px solid #c0b8cc;
+    background-color: #f0e5ff;
+    text-align: center;
+}
+.wiki-container .messagebox.cleanup {
+    border: 1px solid #9f9fff;
+    background-color: #efefff;
+    text-align: center;
+}
+.wiki-container .messagebox.standard-talk {
+    border: 1px solid #c0c090;
+    background-color: #f8eaba;
+    margin: 4px auto;
+}
+.mbox-inside .standard-talk,
+.wiki-container .messagebox.nested-talk {
+    border: 1px solid #c0c090;
+    background-color: #f8eaba;
+    width: 100%;
+    margin: 2px 0;
+    padding: 2px;
+}
+.wiki-container .messagebox.small {
+    width: 238px;
+    font-size: 85%;
+    float: right;
+    clear: both;
+    margin: 0 0 1em 1em;
+    line-height: 1.25em;
+}
+.wiki-container .messagebox.small-talk {
+    width: 238px;
+    font-size: 85%;
+    float: right;
+    clear: both;
+    margin: 0 0 1em 1em;
+    line-height: 1.25em;
+    background: #F8EABA;
+}
+th.mbox-text,
+.wiki-container td.mbox-text {
+    border: none;
+    padding: 0.25em 0.9em;
+    width: 100%;
+}
+.wiki-container td.mbox-image {
+    border: none;
+    padding: 2px 0 2px 0.9em;
+    text-align: center;
+}
+.wiki-container td.mbox-imageright {
+    border: none;
+    padding: 2px 0.9em 2px 0;
+    text-align: center;
+}
+.wiki-container td.mbox-empty-cell {
+    border: none;
+    padding: 0px;
+    width: 1px;
+}
+.wiki-container table.ambox {
+    margin: 0px 10%;
+    border: 1px solid #aaa;
+    border-left: 10px solid #1e90ff;
+    background: #fbfbfb;
+}
+.wiki-container table.ambox + table.ambox { margin-top: -1px }
+.ambox th.mbox-text,
+.wiki-container .ambox td.mbox-text { padding: 0.25em 0.5em }
+.wiki-container .ambox td.mbox-image { padding: 2px 0 2px 0.5em }
+.wiki-container .ambox td.mbox-imageright { padding: 2px 0.5em 2px 0 }
+.wiki-container table.ambox-notice { border-left: 10px solid #1e90ff }
+.wiki-container table.ambox-speedy {
+    border-left: 10px solid #b22222;
+    background: #fee;
+}
+.wiki-container table.ambox-delete { border-left: 10px solid #b22222 }
+.wiki-container table.ambox-content { border-left: 10px solid #f28500 }
+.wiki-container table.ambox-style { border-left: 10px solid #f4c430 }
+.wiki-container table.ambox-move { border-left: 10px solid #9932cc }
+.wiki-container table.ambox-protection { border-left: 10px solid #bba }
+.wiki-container table.imbox {
+    margin: 4px 10%;
+    border-collapse: collapse;
+    border: 3px solid #1e90ff;
+    background: #fbfbfb;
+}
+.wiki-container .imbox .mbox-text .imbox {
+    margin: 0 -0.5em;
+    display: block;
+}
+.wiki-container .mbox-inside .imbox { margin: 4px }
+.wiki-container table.imbox-notice { border: 3px solid #1e90ff }
+.wiki-container table.imbox-speedy {
+    border: 3px solid #b22222;
+    background: #fee;
+}
+.wiki-container table.imbox-delete { border: 3px solid #b22222 }
+.wiki-container table.imbox-content { border: 3px solid #f28500 }
+.wiki-container table.imbox-style { border: 3px solid #f4c430 }
+.wiki-container table.imbox-move { border: 3px solid #9932cc }
+.wiki-container table.imbox-protection { border: 3px solid #bba }
+.wiki-container table.imbox-license {
+    border: 3px solid #88a;
+    background: #f7f8ff;
+}
+.wiki-container table.imbox-featured { border: 3px solid #cba135 }
+.wiki-container table.cmbox {
+    margin: 3px 10%;
+    border-collapse: collapse;
+    border: 1px solid #aaa;
+    background: #DFE8FF;
+}
+.wiki-container table.cmbox-notice { background: #D8E8FF }
+.wiki-container table.cmbox-speedy {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border: 4px solid #b22222;
+    background: #FFDBDB;
+}
+.wiki-container table.cmbox-delete { background: #FFDBDB }
+.wiki-container table.cmbox-content { background: #FFE7CE }
+.wiki-container table.cmbox-style { background: #FFF9DB }
+.wiki-container table.cmbox-move { background: #E4D8FF }
+.wiki-container table.cmbox-protection { background: #EFEFE1 }
+.wiki-container table.ombox {
+    margin: 4px 10%;
+    border-collapse: collapse;
+    border: 1px solid #aaa;
+    background: #f9f9f9;
+}
+.wiki-container table.ombox-notice { border: 1px solid #aaa }
+.wiki-container table.ombox-speedy {
+    border: 2px solid #b22222;
+    background: #fee;
+}
+.wiki-container table.ombox-delete { border: 2px solid #b22222 }
+.wiki-container table.ombox-content { border: 1px solid #f28500 }
+.wiki-container table.ombox-style { border: 1px solid #f4c430 }
+.wiki-container table.ombox-move { border: 1px solid #9932cc }
+.wiki-container table.ombox-protection { border: 2px solid #bba }
+.wiki-container table.tmbox {
+    margin: 4px 10%;
+    border-collapse: collapse;
+    border: 1px solid #c0c090;
+    background: #f8eaba;
+}
+.wiki-container .mediawiki .mbox-inside .tmbox {
+    margin: 2px 0;
+    width: 100%;
+}
+.wiki-container .mbox-inside .tmbox.mbox-small {
+    line-height: 1.5em;
+    font-size: 100%;
+}
+.wiki-container table.tmbox-speedy {
+    border: 2px solid #b22222;
+    background: #fee;
+}
+.wiki-container table.tmbox-delete { border: 2px solid #b22222 }
+.wiki-container table.tmbox-content { border: 2px solid #f28500 }
+.wiki-container table.tmbox-style { border: 2px solid #f4c430 }
+.wiki-container table.tmbox-move { border: 2px solid #9932cc }
+table.tmbox-protection,
+.wiki-container table.tmbox-notice { border: 1px solid #c0c090 }
+.wiki-container table.dmbox {
+    clear: both;
+    margin: 0.9em 1em;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background: transparent;
+}
+.wiki-container table.fmbox {
+    clear: both;
+    margin: 0.2em 0;
+    width: 100%;
+    border: 1px solid #aaa;
+    background: #f9f9f9;
+}
+.wiki-container table.fmbox-system { background: #f9f9f9 }
+.wiki-container table.fmbox-warning {
+    border: 1px solid #bb7070;
+    background: #ffdbdb;
+}
+.wiki-container table.fmbox-editnotice { background: transparent }
+div.mw-warning-with-logexcerpt,
+div.mw-lag-warn-high,
+div.mw-cascadeprotectedwarning,
+.wiki-container div#mw-protect-cascadeon {
+    clear: both;
+    margin: 0.2em 0;
+    border: 1px solid #bb7070;
+    background: #ffdbdb;
+    padding: 0.25em 0.9em;
+}
+div.mw-lag-warn-normal,
+.wiki-container div.fmbox-system {
+    clear: both;
+    margin: 0.2em 0;
+    border: 1px solid #aaa;
+    background: #f9f9f9;
+    padding: 0.25em 0.9em;
+}
+.wiki-container body.mediawiki table.mbox-small {
+    clear: right;
+    float: right;
+    margin: 4px 0 4px 1em;
+    width: 238px;
+    font-size: 88%;
+    line-height: 1.25em;
+}
+.wiki-container body.mediawiki table.mbox-small-left {
+    margin: 4px 1em 4px 0;
+    width: 238px;
+    border-collapse: collapse;
+    font-size: 88%;
+    line-height: 1.25em;
+}
+.compact-ambox table .mbox-image,
+.compact-ambox table .mbox-imageright,
+.wiki-container .compact-ambox table .mbox-empty-cell { display: none }
+.wiki-container .compact-ambox table.ambox {
+    border: none;
+    border-collapse: collapse;
+    background: transparent;
+    margin: 0 0 0 1.6em !important;
+    padding: 0 !important;
+    width: auto;
+    display: block;
+}
+.wiki-container body.mediawiki .compact-ambox table.mbox-small-left {
+    font-size: 100%;
+    width: auto;
+    margin: 0;
+}
+.wiki-container .compact-ambox table .mbox-text {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.wiki-container .compact-ambox table .mbox-text-span {
+    display: list-item;
+    line-height: 1.5em;
+    list-style-type: square;
+    list-style-image: url(//bits.wikimedia.org/skins/common/images/bullet.gif);
+}
+.wiki-container .skin-vector .compact-ambox table .mbox-text-span {
+    list-style-type: circle;
+    list-style-image: url(//bits.wikimedia.org/skins/vector/images/bullet-icon.png);
+}
+.wiki-container .compact-ambox .hide-when-compact { display: none }
+.wiki-container div.noarticletext {
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+.wiki-container #wpSave { font-weight: bold }
+.wiki-container .hiddenStructure {
+    display: inline !important;
+    color: #f00;
+    background-color: #0f0;
+}
+.wiki-container .check-icon a.new {
+    display: none;
+    speak: none;
+}
+.nounderlines a,
+.IPA a:link,
+.wiki-container .IPA a:visited { text-decoration: none !important }
+.wiki-container div.NavFrame {
+    margin: 0;
+    padding: 4px;
+    border: 1px solid #aaa;
+    text-align: center;
+    border-collapse: collapse;
+    font-size: 95%;
+}
+.wiki-container div.NavFrame + div.NavFrame {
+    border-top-style: none;
+    border-top-style: hidden;
+}
+.wiki-container div.NavPic {
+    background-color: #fff;
+    margin: 0;
+    padding: 2px;
+    float: left;
+}
+.wiki-container div.NavFrame div.NavHead {
+    height: 1.6em;
+    font-weight: bold;
+    background-color: #ccf;
+    position: relative;
+}
+div.NavFrame p,
+div.NavFrame div.NavContent,
+.wiki-container div.NavFrame div.NavContent p { font-size: 100% }
+.wiki-container div.NavEnd {
+    margin: 0;
+    padding: 0;
+    line-height: 1px;
+    clear: both;
+}
+.wiki-container a.NavToggle {
+    position: absolute;
+    top: 0;
+    right: 3px;
+    font-weight: normal;
+    font-size: 90%;
+}
+.rellink,
+.wiki-container .dablink {
+    font-style: italic;
+    padding-left: 1.6em;
+    margin-bottom: 0.5em;
+}
+.rellink i,
+.wiki-container .dablink i { font-style: normal }
+.wiki-container .listify td { display: list-item }
+.wiki-container .listify tr { display: block }
+.wiki-container .listify table { display: block }
+.geo-default,
+.geo-dms,
+.wiki-container .geo-dec { display: inline }
+.geo-nondefault,
+.wiki-container .geo-multi-punct { display: none }
+.longitude,
+.wiki-container .latitude { white-space: nowrap }
+.wiki-container .nonumtoc .tocnumber { display: none }
+.nonumtoc #toc ul,
+.wiki-container .nonumtoc .toc ul {
+    line-height: 1.5em;
+    list-style: none none;
+    margin: .3em 0 0;
+    padding: 0;
+}
+.nonumtoc #toc ul ul,
+.wiki-container .nonumtoc .toc ul ul { margin: 0 0 0 2em }
+.toclimit-2 .toclevel-1 ul,
+.toclimit-3 .toclevel-2 ul,
+.toclimit-4 .toclevel-3 ul,
+.toclimit-5 .toclevel-4 ul,
+.toclimit-6 .toclevel-5 ul,
+.wiki-container .toclimit-7 .toclevel-6 ul { display: none }
+.wiki-container blockquote.templatequote { margin-top: 0 }
+.wiki-container blockquote.templatequote div.templatequotecite {
+    line-height: 1em;
+    text-align: left;
+    padding-left: 2em;
+    margin-top: 0;
+}
+.wiki-container blockquote.templatequote div.templatequotecite cite { font-size: 85% }
+.wiki-container div.user-block {
+    padding: 5px;
+    margin-bottom: 0.5em;
+    border: 1px solid #A9A9A9;
+    background-color: #FFEFD5;
+}
+.nowrap,
+.nowraplinks a,
+.nowraplinks .selflink,
+.wiki-container sup.reference a { white-space: nowrap }
+.wrap,
+.wiki-container .wraplinks a { white-space: normal }
+.wiki-container .template-documentation {
+    clear: both;
+    margin: 1em 0 0 0;
+    border: 1px solid #aaa;
+    background-color: #ecfcf4;
+    padding: 1em;
+}
+.wiki-container .imagemap-inline div { display: inline }
+.wiki-container #wpUploadDescription { height: 13em }
+.wiki-container .thumbinner { min-width: 100px }
+.wiki-container div.thumb img.thumbimage { background-color: #fff }
+.wiki-container div#content .gallerybox div.thumb { background-color: #F9F9F9 }
+.wiki-container .gallerybox .thumb img { background: #fff url(//bits.wikimedia.org/skins/common/images/Checker-16x16.png) repeat }
+.ns-0 .gallerybox .thumb img,
+.ns-2 .gallerybox .thumb img,
+.ns-100 .gallerybox .thumb img,
+.wiki-container .nochecker .gallerybox .thumb img { background: #fff }
+.wiki-container #mw-subcategories ul {
+    list-style: none none;
+    margin-left: 0.25em;
+}
+.wiki-container .CategoryTreeChildren { margin-left: 1.25em }
+#mw-subcategories,
+#mw-pages,
+#mw-category-media,
+#filehistory,
+#wikiPreview,
+.wiki-container #wikiDiff { clear: both }
+body.rtl #mw-articlefeedbackv5,
+.wiki-container body.rtl #mw-articlefeedback {
+    display: block;
+    margin-bottom: 1em;
+    clear: right;
+    float: right;
+}
+.wiki-container span.updatedmarker {
+    background-color: transparent;
+    color: #006400;
+}
+.wiki-container .mw-special-Watchlist .mw-changeslist-line-watched .mw-title { font-weight: normal }
+.wiki-container .mw-special-Watchlist #mw-watchlist-resetbutton { display: none }
+.wiki-container .wpb .wpb-header { display: none }
+.wiki-container .wpbs-inner .wpb .wpb-header { display: block }
+.wiki-container .wpbs-inner .wpb .wpb-header { display: table-row }
+.wiki-container .wpbs-inner .wpb-outside { display: none }
+.wiki-container .mw-tag-markers {
+    font-family: sans-serif;
+    font-style: italic;
+    font-size: 90%;
+}
+.sysop-show,
+.wiki-container .accountcreator-show { display: none }
+.wiki-container ul.permissions-errors > li { list-style: none none }
+.wiki-container ul.permissions-errors { margin: 0 }
+body.page-Special_UserLogin .mw-label label,
+.wiki-container body.page-Special_UserLogin_signup .mw-label label { white-space: nowrap }
+@media only screen and (max-device-width:480px) { 
+.wiki-container 	body { -webkit-text-size-adjust: none }
+}
+.wiki-container .transborder { border: solid transparent }
+.wiki-container * html .transborder {
+    border: solid #000001;
+    filter: chroma(color=#000001);
+}
+.wiki-container span.texhtml {
+    font-family: "Times New Roman","Nimbus Roman No9 L",Times,serif;
+    font-size: 118%;
+    white-space: nowrap;
+}
+span.texhtml span.texhtml,
+body.skin-standard span.texhtml,
+body.skin-nostalgia span.texhtml,
+.wiki-container body.skin-simple span.texhtml { font-size: 100% }
+div.mw-geshi div,
+div.mw-geshi div pre,
+span.mw-geshi,
+pre.source-css,
+pre.source-javascript,
+.wiki-container pre.source-lua { font-family: monospace, .wiki-container Courier !important }
+table#mw-prefixindex-list-table,
+.wiki-container table#mw-prefixindex-nav-table { width: 98% }
+.wiki-container .portal-column-left {
+    float: left;
+    width: 50%;
+}
+.wiki-container .portal-column-right {
+    float: right;
+    width: 49%;
+}
+.wiki-container .portal-column-left-wide {
+    float: left;
+    width: 60%;
+}
+.wiki-container .portal-column-right-narrow {
+    float: right;
+    width: 39%;
+}
+.wiki-container .portal-column-left-extra-wide {
+    float: left;
+    width: 70%;
+}
+.wiki-container .portal-column-right-extra-narrow {
+    float: right;
+    width: 29%;
+}
+@media only screen and (max-width:800px) { 
+	.portal-column-left,
+	.portal-column-right,
+	.portal-column-left-wide,
+	.portal-column-right-narrow,
+	.portal-column-left-extra-wide,
+.wiki-container 	.portal-column-right-extra-narrow {
+	    float: inherit;
+	    width: inherit;
+	}
+}
+.wiki-container #bodyContent .letterhead {
+    background-image: url('//upload.wikimedia.org/wikipedia/commons/e/e0/Tan-page-corner.png');
+    background-repeat: no-repeat;
+    padding: 2em;
+    background-color: #faf9f2;
+}
+.wiki-container .treeview ul {
+    padding: 0;
+    margin: 0;
+}
+.wiki-container .treeview li {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    list-style-image: none;
+    zoom: 1;
+}
+.wiki-container .treeview li li {
+    background: url("//upload.wikimedia.org/wikipedia/commons/f/f2/Treeview-grey-line.png") no-repeat 0 -2981px;
+    padding-left: 20px;
+    text-indent: 0.3em;
+}
+.wiki-container .treeview li li.lastline { background-position: 0 -5971px }
+.wiki-container .treeview li.emptyline > ul { margin-left: -1px }
+.wiki-container .treeview li.emptyline > ul > li:first-child { background-position: 0 9px }
+.wiki-container .inputbox-hidecheckboxes form .inputbox-element { display: none !important }
+.wiki-container #editpage-specialchars { display: none }
+.wiki-container .k-player .k-attribution { visibility: hidden }
+body.page-Main_Page #deleteconfirm,
+body.page-Main_Page #t-cite,
+body.page-Main_Page #footer-info-lastmod,
+body.page-Main_Page.action-view #siteSub,
+body.page-Main_Page.action-view #contentSub,
+.wiki-container body.page-Main_Page.action-view h1.firstHeading { display: none !important }
+.wiki-container body.page-Main_Page #mp-topbanner { margin-top: 0 !important }
+.wiki-container #coordinates {
+    position: absolute;
+    top: 0em;
+    right: 0em;
+    float: right;
+    margin: 0em;
+    padding: 0em;
+    line-height: 1.5em;
+    text-align: right;
+    text-indent: 0;
+    font-size: 85%;
+    text-transform: none;
+    white-space: nowrap;
+}
+.wiki-container div.topicon {
+    position: absolute;
+    top: -2em;
+    margin-right: -10px;
+    display: block !important;
+}
+.wiki-container div.flaggedrevs_short {
+    position: absolute;
+    top: -3em;
+    right: 80px;
+    z-index: 1;
+    margin-left: 0;
+    margin-right: -10px;
+}
+.wiki-container body.rtl #protected-icon { left: 55px }
+body.rtl #spoken-icon,
+.wiki-container body.rtl #commons-icon { left: 30px }
+.wiki-container body.rtl #featured-star { left: 10px }
+.wiki-container div.vectorMenu div { z-index: 2 }
+.wiki-container #siteSub {
+    display: inline;
+    font-size: 92%;
+}
+.wiki-container li.GA { list-style-image: url(//upload.wikimedia.org/wikipedia/commons/4/42/Monobook-bullet-ga.png) }
+.wiki-container li.FA { list-style-image: url(//upload.wikimedia.org/wikipedia/commons/d/d4/Monobook-bullet-star.png) }
+#bodyContent a.external[href ^="https://"],
+.wiki-container .link-https {
+    background: url(//upload.wikimedia.org/wikipedia/en/0/00/Lock_icon_blue.gif) center right no-repeat;
+    padding-right: 16px;
+}
+.wiki-container div.redirectMsg img { vertical-align: text-bottom }
+.wiki-container .redirectText {
+    font-size: 150%;
+    margin: 5px;
+}
+@media print { 
+	.ns-0 .ambox,
+	.ns-0 .navbox,
+	.ns-0 .vertical-navbox,
+	.ns-0 .infobox.sisterproject,
+	.ns-0 .dablink,
+	.ns-0 .metadata,
+	.editlink,
+	a.NavToggle,
+	span.collapseButton,
+.wiki-container 	span.mw-collapsible-toggle { display: none !important }
+	#content cite a.external.text:after,
+	.nourlexpansion a.external.text:after,
+.wiki-container 	.nourlexpansion a.external.autonumber:after { display: none !important }
+	table.collapsible tr,
+	div.NavPic,
+.wiki-container 	div.NavContent { display: block !important }
+.wiki-container 	table.collapsible tr { display: table-row !important }
+	.skin-simple div#column-one,
+	.skin-simple div#f-poweredbyico,
+	.skin-simple div#f-copyrightico,
+.wiki-container 	.skin-simple .editsection { display: none }
+.wiki-container 	#firstHeading { margin: 0px }
+	#content a.external.text:after,
+.wiki-container 	#content a.external.autonumber:after { word-wrap: break-word }
+}
+@media handheld { 
+	table.layout,
+	table.layout tbody,
+	table.layout tr,
+	table.layout th,
+	table.layout td,
+	#mp-topbanner,
+	#mp-topbanner tbody,
+	#mp-topbanner tr,
+	#mp-topbanner th,
+	#mp-topbanner td,
+	#mp-upper,
+	#mp-upper tbody,
+	#mp-upper tr,
+	#mp-upper th,
+	#mp-upper td,
+	#mp-tfp,
+	#mp-tfp tbody,
+	#mp-tfp tr,
+	#mp-tfp th,
+.wiki-container 	#mp-tfp td {
+	    display: block !important;
+	    width: 100% !important;
+	}
+}
+/* cache key: enwiki:resourceloader:filter:minify-css:7:f5e29cfc36e85d8ff12194ae2c6fda5b */
