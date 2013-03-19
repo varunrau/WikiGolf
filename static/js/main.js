@@ -2,7 +2,15 @@ $(document).ready(function() {
     var depth = 0;
     var nodes = new Array();
     var end_node = null;
-    $('.depth-num').text(depth);
+
+    var updateDepth = function(d, send) {
+        $('.depth-num').text(d);
+        if (send) {
+            conn.send({"oppDepth": d});
+        }
+    };
+
+    updateDepth(depth, false);
     $('.opp-depth-text').text('Waiting for connection...');
 
     var conn;
@@ -45,13 +53,15 @@ $(document).ready(function() {
             peer.on('connection', connect);
             if (data['partnerid']) {
                 var c = peer.connect(data['partnerid']);
-                console.log('almost connected');
                 c.on('open', function() {
                     connect(c);
                 });
                 c.on('error', function(err) {
                     console.log(err);
                 });
+
+                // Listen for incoming connections
+                peer.on('connection', connect);
             }
         },
         error: function(e) {
@@ -59,13 +69,6 @@ $(document).ready(function() {
         }
     });
 
-    // This will be the peer we're connecting to
-    peer.on('open', function(id) {
-        console.log(id);
-    });
-
-    // Listen for incoming connections
-    peer.on('connection', connect);
 
 
     $('.back').click(function(e) {
@@ -79,7 +82,7 @@ $(document).ready(function() {
             console.log('depth is ' + depth);
             $('.depth-num').text(depth);
             conn.on('open', function() {
-                updateDepth(depth);
+                updateDepth(depth, true);
             });
         }
     });
@@ -118,7 +121,7 @@ $(document).ready(function() {
     var linkClicked = function(e, loc, update) {
         if (update) {
             depth++;
-            updateDepth(depth);
+            updateDepth(depth, true);
             if (loc == end_node) {
                 displayWin();
             }
@@ -175,7 +178,7 @@ $(document).ready(function() {
             }
         });
         depth = $(this).index();
-        updateDepth(depth);
+        updateDepth(depth, true);
         nodes.splice(depth + 1, nodes.length - depth);
         updateNodes();
     };
@@ -196,10 +199,6 @@ $(document).ready(function() {
         alert('You made it in ' + depth + ' moves!');
     };
 
-    var updateDepth = function(d) {
-        $('.depth-num').text(d);
-        conn.send({"oppDepth": d});
-    };
 
 
 });
