@@ -156,5 +156,5 @@ def images(filename):
 def gifs(filename):
     return static_file(filename, root='static/images')
 
-run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
+run(host='0.0.0.0', port=int(os.environ.get('PORT', 3000)), debug=True)
 

@@ -88,6 +88,13 @@ $(document).ready(function() {
             }
             $("a").click(function(e) {
                 disableClicks(e);
+                if ($(this).hasClass('play-game')) {
+                    $('html, body').animate({
+                        scrollTop: $(".navbar").offset().top
+                    }, 1000);
+                    return;
+                }
+
                 // If we haven't clicked on this before
                 if ($.inArray($(this).attr('href'), nodes) === -1) {
                     linkClicked(e, $(this).attr('href'), true);

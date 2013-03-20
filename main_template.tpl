@@ -15,8 +15,35 @@
 
     <body>
         <div class='top'>
-            <div class="banner-area">
-                <h1 class="banner">WikiGolf</h1>
+            <div class='container'>
+                <hr>
+                <div class='jumbotron'>
+                    <h1>WikiGolf</h1>
+                    <p class='lead'>
+                    WikiGolf is a GWAP (a game with a purpose) that lets you play Wikipedia Golf with your friends while also generating useful data to help solve difficult problems in Artificial Intelligence.
+                    </p>
+                    <a class='btn btn-large btn-success play-game' href='#'>Play a Game!</a>
+                </div>
+                <hr>
+                <div class='row-fluid'>
+                    <div class='span4'>
+                        <h2>How do I play?</h2>
+                        <p>
+                            The objective of the game is to go from the start page to the goal page by only clicking on the links on the wikipedia page. The player who finishes first with the fewest number of clicks wins!
+                        </p>
+                    </div>
+                    <div class='span4'>
+                        <h2>How does it work?</h2>
+                        <p>
+                            When you finish a round, we look at the path you take and try to find patterns. We hope to use this data towards improving Natural Language Processing programs like Siri and Google Now.                         </p>
+                    </div>
+                    <div class='span4'>
+                        <h2>What will it solve?</h2>
+                        <p>
+                            Why is it that some pages are more closely related than others? What links on Wikipedia are relevant to the current search? How can we figure out the context of this page? These are the types of questions we hope to answer.
+                        </p>
+                    </div>
+                </div>
             </div>
             <div class="description">
             </div>

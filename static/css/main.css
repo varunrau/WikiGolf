@@ -89,3 +89,7 @@ div.navbar.fix-top {
     width: auto;
     text-align: center;
 }
+
+.container {
+    text-align: center;
+}
