@@ -23,6 +23,12 @@ $(document).ready(function() {
     updateDepth(depth, false);
     $('.opp-depth-text').text('Waiting for connection...');
 
+    var scrollToTop = function() {
+        $('html, body').animate({
+            scrollTop: $(".navbar").offset().top
+        }, 1000);
+    };
+
     var conn;
     // The key is this app's api key. It may be worthwhile later to get this from the server later
     var peer = null;
@@ -88,10 +94,8 @@ $(document).ready(function() {
             }
             $("a").click(function(e) {
                 disableClicks(e);
+                scrollToTop();
                 if ($(this).hasClass('play-game')) {
-                    $('html, body').animate({
-                        scrollTop: $(".navbar").offset().top
-                    }, 1000);
                     return;
                 }
 
@@ -148,6 +152,7 @@ $(document).ready(function() {
                 $('.wiki-container').html(data);
                 $("a").click(function(e) {
                     disableClicks(e);
+                    scrollToTop();
                     if ($.inArray($(this).attr('href'), nodes) === -1) {
                         linkClicked(e, $(this).attr('href'), true);
                         if (update) {
@@ -177,6 +182,7 @@ $(document).ready(function() {
                 $('.wiki-container').html(data);
                 $("a").click(function(e) {
                     disableClicks(e);
+                    scrollToTop();
                     // If we haven't clicked on this before
                     if ($.inArray($(this).attr('href'), nodes) === -1) {
                         linkClicked(e, $(this).attr('href'), true);
