@@ -209,6 +209,8 @@ $(document).ready(function() {
         alert('You made it in ' + depth + ' moves!');
     };
 
-
-
+    // Returns false if the link does not start with the '/wiki/'
+    var isExternal = function(link) {
+        return link.indexOf("/wiki/") !== -1;
+    };
 });

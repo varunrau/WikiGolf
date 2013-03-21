@@ -124,21 +124,6 @@ def wiki_html():
     else:
         return None
 
-#""" User has logged in for the first time. Assign them a user id and put them on
-#    a waiting list or give them a partner.
-#"""
-#@get('/peerid')
-#def peerid():
-#    # Generate random user id
-#    new_peer = str(uuid.uuid4())
-#    if len(inactive_peers) > 0:
-#        print 'Connecting two peers together'
-#        return {'peerid': new_peer, 'partnerid': inactive_peers.pop(0)}
-#    else:
-#        inactive_peers.append(new_peer)
-#        return {'peerid': new_peer}
-
-
 """ The next three methods are used to serve static files. """
 @get('/<filename:re:.*\.js>')
 def javascripts(filename):
