@@ -81,6 +81,7 @@
                     </div>
                 </div>
                 <span class='loading-icon'>Loading...</span>
+                <div id='digiclock'></div>
             </div>
         </div>
     </body>

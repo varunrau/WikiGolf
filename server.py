@@ -1,16 +1,14 @@
 #!/usr/bin/python
 
-from bottle import *
-from BeautifulSoup import BeautifulSoup, SoupStrainer
-import httplib2
+from bottle import request, get, view, post, route, static_file, run
+from BeautifulSoup import BeautifulSoup
 import urllib2
-import re
 import uuid
-from util import *
-from peer import *
+from peer import Peer
 import os
 
 inactive_peers = []
+
 
 @route('/')
 @view('main_template')
@@ -19,13 +17,15 @@ def main():
     html = urllib2.urlopen(random_wiki).read()
     return dict(title="Welcome to Wikipedia Golf!", html=html)
 
+
 @get("/wiki-html")
 def wiki_html():
     new_peer = str(uuid.uuid4())
     data = {"peerid": new_peer}
     if len(inactive_peers) > 0:
         partner = inactive_peers.pop(0)
-        req = urllib2.Request('http://en.wikipedia.org' + partner.start_node, headers={'User-Agent' : 'Magic Browser'})
+        root = "http://en.wikipedia.org"
+        req = urllib2.Request(root + partner.start_node, headers={'User-Agent': 'Magic Browser'})
         con = urllib2.urlopen(req)
         html = con.read()
         soup = strip_soup(BeautifulSoup(html))
@@ -41,7 +41,7 @@ def wiki_html():
         start_title = get_random_wiki()
         start = urllib2.quote(start_title.encode('utf-8'))
         end = get_random_wiki()
-        req = urllib2.Request("http://en.wikipedia.org" + start, headers={'User-Agent' : "Magic Browser"})
+        req = urllib2.Request("http://en.wikipedia.org" + start, headers={'User-Agent': "Magic Browser"})
         con = urllib2.urlopen(req)
         html = con.read()
         soup = BeautifulSoup(html)
@@ -56,6 +56,7 @@ def wiki_html():
         data['end_title'] = get_title(end)
     return data
 
+
 @post("/get-html")
 def get_html():
     key_list = [key for key in request.POST]
@@ -65,11 +66,11 @@ def get_html():
         val = key_list[0]
     if val:
         wiki = "http://en.wikipedia.org" + val
-        req = urllib2.Request(wiki, headers={'User-Agent' : "Magic Browser"})
+        req = urllib2.Request(wiki, headers={'User-Agent': "Magic Browser"})
         con = urllib2.urlopen(req)
         html = con.read()
         soup = BeautifulSoup(html)
-        [s.extract() for s in soup.findAll('script')] # remove all scripts
+        [s.extract() for s in soup.findAll('script')]  # remove all scripts
         [s.extract() for s in soup.findAll('style')]
         [s.extract() for s in soup.findAll('link')]
         [s.extract() for s in soup.findAll('title')]
@@ -78,13 +79,13 @@ def get_html():
         return None
 
 
-"""
-    This function will return a random wikipedia page in the form of
-    /wiki/<WIKIPEDIA PAGE>
-"""
 def get_random_wiki():
+    """
+        This function will return a random wikipedia page in the form of
+        /wiki/<WIKIPEDIA PAGE>
+    """
     random = "http://en.wikipedia.org/wiki/Special:Random"
-    req = urllib2.Request(random, headers={'User-Agent' : "Magic Browser"})
+    req = urllib2.Request(random, headers={'User-Agent': "Magic Browser"})
     con = urllib2.urlopen(req)
     html = con.read()
     soup = BeautifulSoup(html)
@@ -92,9 +93,11 @@ def get_random_wiki():
     wiki = title_page.split('-')
     return "/wiki/" + wiki[0]
 
+
 def get_title(string):
     vals = string.split("/wiki/")
     return vals[0]
+
 
 def strip_soup(soup):
     [s.extract() for s in soup.findAll('script')]
@@ -103,8 +106,9 @@ def strip_soup(soup):
     [s.extract() for s in soup.findAll('title')]
     return soup
 
+
 @post("/wiki-html")
-def wiki_html():
+def wiki_html_post():
     key_list = [key for key in request.POST]
     print key_list
     val = None
@@ -112,11 +116,11 @@ def wiki_html():
         val = key_list[0]
     if val:
         wiki = "http://en.wikipedia.org" + val
-        req = urllib2.Request(wiki, headers={'User-Agent' : "Magic Browser"})
+        req = urllib2.Request(wiki, headers={'User-Agent': "Magic Browser"})
         con = urllib2.urlopen(req)
         html = con.read()
         soup = BeautifulSoup(html)
-        [s.extract() for s in soup.findAll('script')] # remove all scripts
+        [s.extract() for s in soup.findAll('script')]  # remove all scripts
         [s.extract() for s in soup.findAll('style')]
         [s.extract() for s in soup.findAll('link')]
         [s.extract() for s in soup.findAll('title')]
@@ -125,21 +129,25 @@ def wiki_html():
         return None
 
 """ The next three methods are used to serve static files. """
+
+
 @get('/<filename:re:.*\.js>')
 def javascripts(filename):
     return static_file(filename, root='static/js')
+
 
 @get('/<filename:re:.*\.css>')
 def stylesheets(filename):
     return static_file(filename, root='static/css')
 
+
 @get('/<filename:re:.*\.png>')
 def images(filename):
     return static_file(filename, root='static/images')
+
 
 @get('/<filename:re:.*\.gif>')
 def gifs(filename):
     return static_file(filename, root='static/images')
 
 run(host='0.0.0.0', port=int(os.environ.get('PORT', 3000)), debug=True)
-
