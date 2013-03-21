@@ -38,9 +38,9 @@ def wiki_html():
         data['end_title'] = partner.end_title
         print 'connecting to partner'
     else:
-        start_title = '/wiki/Google' #get_random_wiki()
+        start_title = get_random_wiki()
         start = urllib2.quote(start_title.encode('utf-8'))
-        end = '/wiki/Coffee' #get_random_wiki()
+        end = get_random_wiki()
         req = urllib2.Request("http://en.wikipedia.org" + start, headers={'User-Agent': "Magic Browser"})
         con = urllib2.urlopen(req)
         html = con.read()
