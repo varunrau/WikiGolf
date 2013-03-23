@@ -9,7 +9,6 @@ import os
 
 inactive_peers = []
 
-print 'hi'
 
 @route('/')
 @view('main_template')

@@ -72,21 +72,6 @@ $(document).ready(function() {
             console.log('something went wrong server side');
         }
     });
-
-    $('.back').click(function(e) {
-        if (nodes.length > 0) {
-            // Remove the node we are currently on
-            nodes.pop();
-            linkClicked(e, nodes[nodes.length - 1], true);
-            updateNodes();
-            depth -= 2;
-            console.log('depth is ' + depth);
-            $('.depth-num').text(depth);
-            conn.on('open', function() {
-                updateDepth(depth, true);
-            });
-        }
-    });
 });
 
 // Update the depth, send the info to the opponent if we have one.
