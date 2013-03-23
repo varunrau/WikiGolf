@@ -13,9 +13,7 @@ inactive_peers = []
 @route('/')
 @view('main_template')
 def main():
-    random_wiki = "http://www.google.com"
-    html = urllib2.urlopen(random_wiki).read()
-    return dict(title="Welcome to Wikipedia Golf!", html=html)
+    return dict(title="Welcome to Wikipedia Golf!", html=None)
 
 
 @get("/wiki-html")

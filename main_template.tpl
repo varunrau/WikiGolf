@@ -16,10 +16,10 @@
     <body>
         <div class='top'>
             <div class='container'>
-				<div class='jumbotron'>
+                <div class='jumbotron'>
                     <h1>WikiGolf</h1>
                     <p class='lead'>
-                    WikiGolf is a GWAP (a game with a purpose) that lets you play Wikipedia Golf with your friends while also generating useful data to help solve difficult problems in Artificial Intelligence.
+                    WikiGolf is a GWAP (a game with a purpose) that lets you play Wikipedia Golf while also generating useful data to help solve difficult problems in Artificial Intelligence.
                     </p>
                     <a class='btn btn-large btn-success play-game' href='#'>Play a Game!</a>
                 </div>
@@ -58,6 +58,8 @@
             </div>
         </div>
         <div class="gamegrid clearfix">
+            <div class='flash-area'>
+            </div>
             <div class="wiki-container">
             </div>
             <div class="game-info">
