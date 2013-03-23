@@ -10,66 +10,25 @@ $(document).ready(function() {
     // The key is this app's api key. It may be worthwhile later to get this from the server later
     var peer = null;
 
-    var getFirstPage = function(data) {
-        $('.wiki-container').html(data['html']);
-        nodes.push(data['title']);
-        updateNodes();
-        end_node = data['end_node'];
-        var peerid = data['peerid'];
-        peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: false});
-        peer.on('connection', connect);
-        peer.on('close', close);
-        $('.goal-node').text("Goal: " + data['end_node']);
-        if (data['partnerid']) {
-            end_title = data['end_title'];
-            var c = peer.connect(data['partnerid']);
-            c.on('open', function() {
-                    connect(c);
-                    });
-            c.on('error', function(err) {
-                    console.log(err);
-                    });
-            peer.on('connection', connect);
-        }
-        $("a").click(function(e) {
-                disableClicks(e);
-                if ($(this).hasClass('play-game')) {
-                    scrollToTop();
-                    $('.play-game').remove();
-                    return;
-                }
-                // We don't have a partner yet!
-                // Tell the user we couldn't do anything.
-                if (conn === undefined) {
-                    $('.flash-area').append("<div class='flash'>You're not connected to a partner! We're working on connecting you.</div>");
-                    $('.flash').fadeOut(4000, function() {
-                        console.log('flash faded out');
-                    });
-                    return;
-                }
-                // If we haven't clicked on this before
-                if ($.inArray($(this).attr('href'), nodes) === -1) {
-                    linkClicked(e, $(this).attr('href'), true);
-                    nodes.push($(this).attr('href'));
-                    updateNodes();
-                }
-        });
-    };
-
     $('.loading-icon').hide();
 
-    // Get the first page
-    // Get the page we are supposed to end at.
-    $.ajax({
-        url: "wiki-html",
-        type: "GET",
-        async: false,
-        success: function(data) {
-            console.log(data);
-            getFirstPage(data);
-        },
-        error: function(e) {
-            console.log('something went wrong server side');
+    // INSERT SOMETHING HERE THAT DISABLES SCROLLING
+
+    $('a').click(function() {
+        // Get the wiki data and scroll to the game area
+        if ($(this).hasClass('play-game')) {
+            $.ajax({
+                url: "wiki-html",
+                type: "GET",
+                async: false,
+                success: function(data) {
+                    getFirstPage(data);
+                    scrollToTop();
+                },
+                error: function(e) {
+                    console.log('something went wrong serverside');
+                }
+            });
         }
     });
 });
@@ -120,6 +79,7 @@ var connect = function(c) {
     });
 
     conn.on('close', function(err) {
+        // TODO delete the current peer object
         $.ajax({
             url: "wiki-html",
             type: "GET",
@@ -224,4 +184,50 @@ var displayWin = function() {
     var data = {"oppWin": nodes};
     conn.send(data);
     alert('You made it in ' + depth + ' moves!');
+};
+
+var getFirstPage = function(data) {
+    $('.wiki-container').html(data['html']);
+    nodes.push(data['title']);
+    updateNodes();
+    end_node = data['end_node'];
+    var peerid = data['peerid'];
+    peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: false});
+    peer.on('connection', connect);
+    peer.on('close', close);
+    $('.goal-node').text("Goal: " + data['end_node']);
+    if (data['partnerid']) {
+        end_title = data['end_title'];
+        var c = peer.connect(data['partnerid']);
+        c.on('open', function() {
+                connect(c);
+                });
+        c.on('error', function(err) {
+                console.log(err);
+                });
+        peer.on('connection', connect);
+    }
+    $("a").click(function(e) {
+            disableClicks(e);
+            if ($(this).hasClass('play-game')) {
+                scrollToTop();
+                $('.play-game').remove();
+                return;
+            }
+            // We don't have a partner yet!
+            // Tell the user we couldn't do anything.
+            if (conn === undefined) {
+                $('.flash-area').append("<div class='flash'>You're not connected to a partner! We're working on connecting you.</div>");
+                $('.flash').fadeOut(4000, function() {
+                    console.log('flash faded out');
+                });
+                return;
+            }
+            // If we haven't clicked on this before
+            if ($.inArray($(this).attr('href'), nodes) === -1) {
+                linkClicked(e, $(this).attr('href'), true);
+                nodes.push($(this).attr('href'));
+                updateNodes();
+            }
+    });
 };
