@@ -1,13 +1,14 @@
+var depth = 0;
+var nodes = new Array();
+var end_node = null;
+var conn;
+var peer = null;
+
 $(document).ready(function() {
-    var depth = 0;
-    var nodes = new Array();
-    var end_node = null;
 
     updateDepth(depth, false);
     $('.opp-depth-text').text('Waiting for connection...');
 
-    var conn;
-    var peer = null;
 
     $('.loading-icon').hide();
 
