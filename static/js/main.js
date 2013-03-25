@@ -7,7 +7,6 @@ $(document).ready(function() {
     $('.opp-depth-text').text('Waiting for connection...');
 
     var conn;
-    // The key is this app's api key. It may be worthwhile later to get this from the server later
     var peer = null;
 
     $('.loading-icon').hide();
