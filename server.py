@@ -55,6 +55,23 @@ def wiki_html():
     return data
 
 
+@post("/quit")
+def quit():
+    peerid = get_val_from_post(request.POST)
+    for peer in inactive_peers:
+        if peer.unique_id == peerid:
+            inactive_peers.remove(peer)
+            return
+
+
+def get_val_from_post(post):
+    key_list = [key for key in post]
+    val = None
+    if len(key_list) > 0:
+        val = key_list[0]
+    return val
+
+
 @post("/get-html")
 def get_html():
     key_list = [key for key in request.POST]

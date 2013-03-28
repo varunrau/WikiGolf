@@ -4,30 +4,62 @@ var end_node = null;
 var conn;
 var peer = null;
 
-$(document).ready(function() {
+var initGame = function() {
+    if (peer) {
+        // Destroy peer
+        // Not sure this is the right api call...could crash
+        peer.close();
+    }
+    depth = 0;
+    nodes = new Array();
+    end_node = null;
+    conn = undefined;
+    peer = null;
+    updateDepth();
+    updateNodes();
+};
 
+
+$(document).ready(function() {
     updateDepth(depth, false);
     $('.opp-depth-text').text('Waiting for connection...');
 
-
     $('.loading-icon').hide();
 
-    // INSERT SOMETHING HERE THAT DISABLES SCROLLING
+    // Disable scrolling
+    $('body').css('overflow', 'hidden');
 
     $('a').click(function() {
         // Get the wiki data and scroll to the game area
         if ($(this).hasClass('play-game')) {
+            $('.play-game').text('Connecting...');
             $.ajax({
                 url: "wiki-html",
                 type: "GET",
-                async: false,
                 success: function(data) {
-                    getFirstPage(data);
-                    scrollToTop();
+                    if (data['partnerid']) {
+                        $('.play-game').remove();
+                        getFirstPage(data);
+                        scrollToTop();
+                        $('body').css('overflow', 'visible');
+                    } else {
+                        $('.play-game').text('Waiting for partner...');
+                        // there's probably some jquery thing that will call a function
+                        // after 30 seconds
+                        $.delay(6000, function() {
+                            // This is a super shady way of keeping track of state.
+                            // GAME STATE
+                            if ($('.play-game')) {
+                                // tell user to come back later and end connection
+                                $('#noPartners').modal({
+                                    keyboard: true
+                                });
+                                terminatePeer();
+                            }
+                        });
+                    }
                 },
-                error: function(e) {
-                    console.log('something went wrong serverside');
-                }
+                error: errFn
             });
         }
     });
@@ -79,7 +111,7 @@ var connect = function(c) {
     });
 
     conn.on('close', function(err) {
-        // TODO delete the current peer object
+        terminatePeer();
         $.ajax({
             url: "wiki-html",
             type: "GET",
@@ -87,11 +119,10 @@ var connect = function(c) {
             success: function(data) {
                 getFirstPage(data);
             },
-            error: function(err) {
-                console.log('something went wrong server side ' + err);
-            }
+            error: errFn
         });
         console.log(conn.peer + ' has left the server thing');
+        initGame();
     });
 };
 
@@ -125,9 +156,7 @@ var linkClicked = function(e, loc, update) {
             });
             $(".node-list li").click(nodeItemClicked);
         },
-        error: function(e) {
-            console.log('something went wrong server side');
-        }
+        error: errFn
     });
 };
 
@@ -165,9 +194,7 @@ var nodeItemClicked = function(e) {
             });
             $(".node-list li").click(nodeItemClicked);
         },
-        error: function(e) {
-            console.log('something went wrong server side');
-        }
+        error: errFn
     });
     depth = $(this).index();
     updateDepth(depth, true);
@@ -201,10 +228,10 @@ var getFirstPage = function(data) {
         var c = peer.connect(data['partnerid']);
         c.on('open', function() {
                 connect(c);
-                });
+        });
         c.on('error', function(err) {
                 console.log(err);
-                });
+        });
         peer.on('connection', connect);
     }
     $("a").click(function(e) {
@@ -231,3 +258,22 @@ var getFirstPage = function(data) {
             }
     });
 };
+
+var terminatePeer = function() {
+    $.ajax({
+        url: "quit",
+        type: "POST",
+        data: data["peerid"],
+        success: function() {
+            console.log('terminated connection');
+        },
+        error: errFn
+    });
+};
+
+var errFn = function(err) {
+    console.log("Received error: " + err);
+};
+
+
+initGame();

@@ -64,7 +64,7 @@
             </div>
             <div class="game-info">
                 <h4 class='goal-node'>
-                    HI GAIZ
+                    Finding Goal...
                 </h4>
                 <div class="top-right">
                     <div class"'depth">
@@ -84,6 +84,19 @@
                 </div>
                 <span class='loading-icon'>Loading...</span>
                 <div id='digiclock'></div>
+            </div>
+        </div>
+        <div class="modal hide" id="noPartners">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3>Unable to Connect</h3>
+            </div>
+            <div class="modal-body">
+                <p>We're really sorry! It appears that there is no one available to play with you. At the moment, we only support two player games.</p>
+                <p>Please try again later or grab a friend and play together!</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal">Ok</a>
             </div>
         </div>
     </body>
