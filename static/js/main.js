@@ -6,9 +6,7 @@ var peer = null;
 
 var initGame = function() {
     if (peer) {
-        // Destroy peer
-        // Not sure this is the right api call...could crash
-        peer.close();
+        peer.destroy();
     }
     depth = 0;
     nodes = new Array();
@@ -44,6 +42,7 @@ $(document).ready(function() {
                         $('body').css('overflow', 'visible');
                     } else {
                         $('.play-game').text('Waiting for partner...');
+                        // TODO
                         // there's probably some jquery thing that will call a function
                         // after 30 seconds
                         $.delay(6000, function() {
@@ -122,8 +121,6 @@ var connect = function(c) {
             error: errFn
         });
         console.log(conn.peer + ' has left the server thing');
-        initGame();
-        scrollToTop();
         // TODO
         // Display a modal alert telling the user that their partner has left them
         // for a younger more attractive player
@@ -131,6 +128,8 @@ var connect = function(c) {
         $('#partnerDropped').modal({
             keyboard: true
         });
+        initGame();
+        scrollToTop();
     });
 };
 
