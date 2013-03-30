@@ -123,6 +123,14 @@ var connect = function(c) {
         });
         console.log(conn.peer + ' has left the server thing');
         initGame();
+        scrollToTop();
+        // TODO
+        // Display a modal alert telling the user that their partner has left them
+        // for a younger more attractive player
+        // possibly someone who is better at Wikipedia Golf
+        $('#partnerDropped').modal({
+            keyboard: true
+        });
     });
 };
 
@@ -246,7 +254,7 @@ var getFirstPage = function(data) {
             if (conn === undefined) {
                 $('.flash-area').append("<div class='flash'>You're not connected to a partner! We're working on connecting you.</div>");
                 $('.flash').fadeOut(4000, function() {
-                    console.log('flash faded out');
+                    console.log('flash message faded out');
                 });
                 return;
             }

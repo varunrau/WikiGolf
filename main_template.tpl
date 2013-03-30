@@ -83,7 +83,6 @@
                     </div>
                 </div>
                 <span class='loading-icon'>Loading...</span>
-                <div id='digiclock'></div>
             </div>
         </div>
         <div class="modal hide" id="noPartners">
@@ -97,6 +96,19 @@
             </div>
             <div class="modal-footer">
                 <a href="#" class="btn" data-dismiss="modal">Ok</a>
+            </div>
+        </div>
+        <div class="modal hide" id="patnerDropped">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3>Your Partner left!</h3>
+            </div>
+            <div class="modal-body">
+                <p>It looks like your partner quit. How rude!</p>
+                <p>Don't worry though because we're working on connecting you to someone else. Someone who appreciates you more.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal">Thanks</a>
             </div>
         </div>
     </body>

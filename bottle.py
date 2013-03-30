@@ -2134,7 +2134,7 @@ class FileUpload(object):
             buf = read(chunk_size)
             if not buf: break
             write(buf)
-        self.file.seek(offset)    
+        self.file.seek(offset)
 
     def save(self, destination, overwrite=False, chunk_size=2**16):
         ''' Save file to disk or copy its content to an open file(-like) object.
