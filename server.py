@@ -135,13 +135,20 @@ def wiki_html_post():
         con = urllib2.urlopen(req)
         html = con.read()
         soup = BeautifulSoup(html)
-        [s.extract() for s in soup.findAll('script')]  # remove all scripts
-        [s.extract() for s in soup.findAll('style')]
-        [s.extract() for s in soup.findAll('link')]
-        [s.extract() for s in soup.findAll('title')]
+        soup = strip_soup(soup)
         return str(soup)
     else:
         return None
+
+@post("/write-win")
+def record_win():
+    win_data = get_val_from_post(request.POST)
+    path = win_data['path']
+    start_node = path[0]
+    end_node = path[-1]
+    depth = len(path)
+    print 'received win'
+
 
 """ The next three methods are used to serve static files. """
 
@@ -165,4 +172,4 @@ def images(filename):
 def gifs(filename):
     return static_file(filename, root='static/images')
 
-run(host='0.0.0.0', port=int(os.environ.get('PORT', 3000)), debug=True)
+run(host='0.0.0.0', port=int(os.environ.get('PORT', 3000)), debug=True, reloader=True)

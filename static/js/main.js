@@ -45,7 +45,7 @@ $(document).ready(function() {
                         // TODO
                         // there's probably some jquery thing that will call a function
                         // after 30 seconds
-                        $.delay(6000, function() {
+                        setTimeout(function() {
                             // This is a super shady way of keeping track of state.
                             // GAME STATE
                             if ($('.play-game')) {
@@ -55,7 +55,7 @@ $(document).ready(function() {
                                 });
                                 terminatePeer();
                             }
-                        });
+                        }, 6000);
                     }
                 },
                 error: errFn
@@ -217,6 +217,15 @@ var isExternal = function(link) {
 var displayWin = function() {
     var data = {"oppWin": nodes};
     conn.send(data);
+    $.ajax({
+        url: "write-win",
+        type: "POST",
+        data: {"path" : nodes},
+        success: function() {
+            console.log('successfully wrote win to server');
+        },
+        error: errFn
+    });
     alert('You made it in ' + depth + ' moves!');
 };
 
