@@ -47,15 +47,13 @@ $(document).ready(function() {
                         // after 30 seconds
                         setTimeout(function() {
                             // This is a super shady way of keeping track of state.
-                            // GAME STATE
-                            if ($('.play-game')) {
+                            if ($('.play-game').length > 0) {
                                 // tell user to come back later and end connection
                                 $('#noPartners').modal({
                                     keyboard: true
                                 });
-                                terminatePeer();
                             }
-                        }, 6000);
+                        }, 60000);
                     }
                 },
                 error: errFn
@@ -104,6 +102,8 @@ var connect = function(c) {
             $('.opp-depth-num').text(data['oppDepth']);
         }
         if (data['oppWin']) {
+            // TODO
+            // Display this in a nice modal view
             alert('Your opponent has won :(' + data['oppWin']);
             alert(data['oppWin']);
         }
@@ -168,7 +168,6 @@ var linkClicked = function(e, loc, update) {
 };
 
 $(document).ajaxStart(function() {
-    console.log('showing');
     $('.loading-icon').show();
 });
 $(document).ajaxStop(function() {
@@ -235,43 +234,46 @@ var getFirstPage = function(data) {
     updateNodes();
     end_node = data['end_node'];
     var peerid = data['peerid'];
-    peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: false});
+    peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: true});
     peer.on('connection', connect);
     peer.on('close', close);
     $('.goal-node').text("Goal: " + data['end_node']);
     if (data['partnerid']) {
         end_title = data['end_title'];
         var c = peer.connect(data['partnerid']);
+        console.log(c);
+        console.log('connecting');
         c.on('open', function() {
-                connect(c);
+            console.log('con conn');
+            connect(c);
         });
         c.on('error', function(err) {
-                console.log(err);
+            console.log(err);
         });
         peer.on('connection', connect);
     }
     $("a").click(function(e) {
-            disableClicks(e);
-            if ($(this).hasClass('play-game')) {
-                scrollToTop();
-                $('.play-game').remove();
-                return;
-            }
-            // We don't have a partner yet!
-            // Tell the user we couldn't do anything.
-            if (conn === undefined) {
-                $('.flash-area').append("<div class='flash'>You're not connected to a partner! We're working on connecting you.</div>");
-                $('.flash').fadeOut(4000, function() {
-                    console.log('flash message faded out');
-                });
-                return;
-            }
-            // If we haven't clicked on this before
-            if ($.inArray($(this).attr('href'), nodes) === -1) {
-                linkClicked(e, $(this).attr('href'), true);
-                nodes.push($(this).attr('href'));
-                updateNodes();
-            }
+        disableClicks(e);
+        if ($(this).hasClass('play-game')) {
+            scrollToTop();
+            $('.play-game').remove();
+            return;
+        }
+        // We don't have a partner yet!
+        // Tell the user we couldn't do anything.
+        if (conn === undefined) {
+            $('.flash-area').append("<div class='flash'>You're not connected to a partner! We're working on connecting you.</div>");
+            $('.flash').fadeOut(4000, function() {
+                console.log('flash message faded out');
+            });
+            return;
+        }
+        // If we haven't clicked on this before
+        if ($.inArray($(this).attr('href'), nodes) === -1) {
+            linkClicked(e, $(this).attr('href'), true);
+            nodes.push($(this).attr('href'));
+            updateNodes();
+        }
     });
 };
 
@@ -279,7 +281,7 @@ var terminatePeer = function() {
     $.ajax({
         url: "quit",
         type: "POST",
-        data: data["peerid"],
+        data: peer.id,
         success: function() {
             console.log('terminated connection');
         },

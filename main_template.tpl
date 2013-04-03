@@ -4,6 +4,7 @@
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="main.js"></script>
         <script src="http://cdn.peerjs.com/0/peer.js"></script>
+        <script src="peer.js"></script>
         <script src="bootstrap/bootstrap.js"></script>
         <script src="style.js"></script>
         <script src="underscore-min.js"></script>
