@@ -1,297 +1,315 @@
-var depth = 0;
-var nodes = new Array();
-var end_node = null;
-var conn;
-var peer = null;
-
-var initGame = function() {
-    if (peer) {
-        peer.destroy();
-    }
-    depth = 0;
-    nodes = new Array();
-    end_node = null;
-    conn = undefined;
-    peer = null;
-    updateDepth();
-    updateNodes();
-};
-
-
 $(document).ready(function() {
+
+    var depth = 0;
+    var nodes = new Array();
+    var end_node = null;
+    var scrolling = false;
+    var game_html = null;
+
+    var initGame = function() {
+        depth = 0;
+        nodes = new Array();
+        end_node = null;
+        $('.opp-depth-text').text('Waiting for connection...');
+        $("body").css("overflow", "hidden");
+    };
+
+    var toggleScrolling = function() {
+        if (scrolling) {
+            $("body").css("overflow", "visible");
+        } else {
+            $("body").css("overflow", "hidden");
+        }
+        scrolling = !scrolling;
+    }
+
+    initGame();
+
+    var updateDepth = function(d, send) {
+        $('.depth-num').text(d);
+        if (send) {
+            conn.send({"oppDepth": d});
+        }
+    };
+
     updateDepth(depth, false);
-    $('.opp-depth-text').text('Waiting for connection...');
+
+    var updateNodes = function() {
+        $('.node-list').empty();
+        $.each(nodes, function() {
+            clicked_link = this.toString();
+            var split_arr = clicked_link.split("/");
+            var clicked_link_name = split_arr[2];
+            $('.node-list').append($('<li>').append("<a class='sidebar' href='" + clicked_link + "'>" + clicked_link_name + "</a>"));
+        });
+    };
+
+
+    var scrollToTop = function() {
+        $('html, body').animate({
+            scrollTop: $(".navbar").offset().top
+        }, 1000);
+    };
+
+    var conn;
+    // The key is this app's api key. It may be worthwhile later to get this from the server later
+    var peer = null;
+
+    var connect = function(c) {
+        conn = c;
+
+        // The person we are connecting to is conn.peer
+        console.log(conn.peer);
+
+        // We have connected to another person!
+        $('.opp-depth-text').text("Your Opponent's Depth:");
+
+        var loadGame = function() {
+            $(".wiki-container").html(game_html);
+            $("body").css("overflow", "visible");
+            scrollToTop();
+            updateNodes();
+            $('.goal-node').text("Goal: " + end_node);
+            $(".play-game").remove();
+            enableClicks();
+        }
+
+        if ($(".play-game").length > 0) {
+            loadGame();
+        }
+
+        // The data that is sent from the other peer
+        conn.on('data', function(data) {
+            if (data['oppDepth']) {
+                $('.opp-depth-num').text(data['oppDepth']);
+            }
+            if (data['oppWin']) {
+                alert('Your opponent has won :(' + data['oppWin']);
+                alert(data['oppWin']);
+            }
+        });
+
+        conn.on('close', function(err) {
+            console.log(conn.peer + ' has left the server thing');
+        });
+    };
 
     $('.loading-icon').hide();
-
-    // Disable scrolling
-    $('body').css('overflow', 'hidden');
-
-    $('a').click(function() {
-        // Get the wiki data and scroll to the game area
-        if ($(this).hasClass('play-game')) {
-            $('.play-game').text('Connecting...');
-            $.ajax({
-                url: "wiki-html",
-                type: "GET",
-                success: function(data) {
-                    if (data['partnerid']) {
-                        $('.play-game').remove();
-                        getFirstPage(data);
-                        scrollToTop();
-                        $('body').css('overflow', 'visible');
-                    } else {
-                        $('.play-game').text('Waiting for partner...');
-                        // TODO
-                        // there's probably some jquery thing that will call a function
-                        // after 30 seconds
-                        setTimeout(function() {
-                            // This is a super shady way of keeping track of state.
-                            if ($('.play-game').length > 0) {
-                                // tell user to come back later and end connection
-                                $('#noPartners').modal({
-                                    keyboard: true
-                                });
-                            }
-                        }, 60000);
-                    }
-                },
-                error: errFn
-            });
-        }
+    $(document).ajaxStart(function() {
+        $('.loading-icon').show();
     });
-});
+    $(document).ajaxStop(function() {
+        $('.loading-icon').hide();
+    });
 
-// Update the depth, send the info to the opponent if we have one.
-var updateDepth = function(d, send) {
-    $('.depth-num').text(d);
-    if (send) {
-        conn.send({"oppDepth": d});
+    var getPage = function() {
+        $.ajax({
+            url: "wiki-html",
+            type: "GET",
+            success: function(data) {
+                var peerid = data["peerid"];
+                peer = new Peer(peerid, {key: "zmnov4fauusxajor", debug: false});
+                peer.on("connection", connect);
+                // We are connecting to another person.
+                if (data["partnerid"]) {
+                    $(".play-game").remove();
+                    $("body").css("overflow", "visible");
+                    $(".wiki-container").html(data["html"]);
+                    $('.goal-node').text("Goal: " + data['end_node']);
+                    scrollToTop();
+                    nodes.push(data["title"]);
+                    updateNodes();
+                    end_node = data["end_node"];
+                    var c = peer.connect(data["partnerid"]);
+                    c.on("open", function() {
+                        connect(c);
+                    });
+                    c.on("error", function() {
+                        console.log(err);
+                    });
+                    peer.on("connection", connect);
+                    enableClicks();
+                } else {
+                    // Load the content but don't start the game. If we have someone connect then start. If no one starts after two minutes quit and tell the user.
+                    $(".play-game").text("Waiting for Partner...");
+                    game_html = data["html"];
+                    nodes.push(data["title"]);
+                    end_node = data["end_node"];
+                    setTimeout(function() {
+                        if ($(".play-game").length > 0) {
+                            $("#noPartners").modal();
+                        }
+                    }, 60000);
+                }
+            }
+        })
     }
-};
 
-// Update the visited node list
-var updateNodes = function() {
-    $('.node-list').empty();
-    $.each(nodes, function() {
-        clicked_link = this.toString();
-        var split_arr = clicked_link.split("/");
-        var clicked_link_name = split_arr[2];
-        $('.node-list').append($('<li>').append("<a class='sidebar' href='" + clicked_link + "'>" + clicked_link_name + "</a>"));
-    });
-};
-
-var scrollToTop = function() {
-    $('html, body').animate({
-        scrollTop: $(".navbar").offset().top
-    }, 1000);
-};
-
-var connect = function(c) {
-    conn = c;
-
-    // The person we are connecting to is conn.peer
-    console.log(conn.peer);
-
-    // We have connected to another person!
-    $('.opp-depth-text').text("Your Opponent's Depth:");
-
-    // The data that is sent from the other peer
-    conn.on('data', function(data) {
-        if (data['oppDepth']) {
-            $('.opp-depth-num').text(data['oppDepth']);
-        }
-        if (data['oppWin']) {
-            // TODO
-            // Display this in a nice modal view
-            alert('Your opponent has won :(' + data['oppWin']);
-            alert(data['oppWin']);
-        }
+    $(".play-game").click(function() {
+        $(".play-game").text("Connecting...");
+        getPage();
     });
 
-    conn.on('close', function(err) {
-        terminatePeer();
+
+    var enableClicks = function() {
+        $("a").click(function(e) {
+            disableClicks(e);
+            scrollToTop();
+            if ($(this).hasClass('play-game')) {
+                toggleScrolling();
+                return;
+            }
+
+            // If we haven't clicked on this before
+            if ($.inArray($(this).attr('href'), nodes) === -1) {
+                linkClicked(e, $(this).attr('href'), true);
+                nodes.push($(this).attr('href'));
+                updateNodes();
+            }
+        });
+    }
+    var dontCallMe = function() {
+        // Get the first page
+        // Get the page we are supposed to end at.
         $.ajax({
             url: "wiki-html",
             type: "GET",
             async: false,
             success: function(data) {
-                getFirstPage(data);
-            },
-            error: errFn
-        });
-        console.log(conn.peer + ' has left the server thing');
-        // TODO
-        // Display a modal alert telling the user that their partner has left them
-        // for a younger more attractive player
-        // possibly someone who is better at Wikipedia Golf
-        $('#partnerDropped').modal({
-            keyboard: true
-        });
-        initGame();
-        scrollToTop();
-    });
-};
+                $('.wiki-container').html(data['html']);
+                nodes.push(data['title']);
+                updateNodes();
+                end_node = data['end_node'];
+                var peerid = data['peerid'];
+                peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: false});
+                peer.on('connection', connect);
+                $('.goal-node').text("Goal: " + data['end_node']);
+                if (data['partnerid']) {
+                    end_title = data['end_title'];
+                    var c = peer.connect(data['partnerid']);
+                    c.on('open', function() {
+                        connect(c);
+                    });
+                    c.on('error', function(err) {
+                        console.log(err);
+                    });
+                    peer.on('connection', connect);
+                }
+                $("a").click(function(e) {
+                    disableClicks(e);
+                    scrollToTop();
+                    if ($(this).hasClass('play-game')) {
+                        toggleScrolling();
+                        return;
+                    }
 
-// When a link is clicked we want to move to the new link and
-// increment our depth
-var linkClicked = function(e, loc, update) {
-    if (update) {
-        depth++;
-        updateDepth(depth, true);
-        if (loc == end_node) {
-            displayWin();
-        }
-    }
-    console.log('loc is ' + loc);
-    $.ajax({
-        url: "wiki-html",
-        type: "POST",
-        data: loc,
-        success: function(data) {
-            $('.wiki-container').html(data);
-            $("a").click(function(e) {
-                disableClicks(e);
-                scrollToTop();
-                if ($.inArray($(this).attr('href'), nodes) === -1) {
-                    linkClicked(e, $(this).attr('href'), true);
-                    if (update) {
+                    // If we haven't clicked on this before
+                    if ($.inArray($(this).attr('href'), nodes) === -1) {
+                        linkClicked(e, $(this).attr('href'), true);
                         nodes.push($(this).attr('href'));
                         updateNodes();
                     }
-                }
-            });
-            $(".node-list li").click(nodeItemClicked);
-        },
-        error: errFn
-    });
-};
-
-$(document).ajaxStart(function() {
-    $('.loading-icon').show();
-});
-$(document).ajaxStop(function() {
-    $('.loading-icon').hide();
-});
-
-var disableClicks = function(e) {
-    e.preventDefault();
-};
-
-var nodeItemClicked = function(e) {
-    var nodeClicked = $(this).children('a').eq(0).attr('href');
-    console.log(nodeClicked);
-    $.ajax({
-        url: "get-html",
-        type: "POST",
-        data: nodeClicked,
-        success: function(data) {
-            console.log(data);
-            $('.wiki-container').html(data);
-            $("a").click(function(e) {
-                disableClicks(e);
-                scrollToTop();
-                // If we haven't clicked on this before
-                if ($.inArray($(this).attr('href'), nodes) === -1) {
-                    linkClicked(e, $(this).attr('href'), true);
-                    nodes.push($(this).attr('href'));
-                    updateNodes();
-                }
-            });
-            $(".node-list li").click(nodeItemClicked);
-        },
-        error: errFn
-    });
-    depth = $(this).index();
-    updateDepth(depth, true);
-    nodes.splice(depth + 1, nodes.length - depth);
-    updateNodes();
-};
-
-// Returns false if the link does not start with the '/wiki/'
-var isExternal = function(link) {
-    return link.indexOf("/wiki/") !== -1;
-};
-
-var displayWin = function() {
-    var data = {"oppWin": nodes};
-    conn.send(data);
-    $.ajax({
-        url: "write-win",
-        type: "POST",
-        data: {"path" : nodes},
-        success: function() {
-            console.log('successfully wrote win to server');
-        },
-        error: errFn
-    });
-    alert('You made it in ' + depth + ' moves!');
-};
-
-var getFirstPage = function(data) {
-    $('.wiki-container').html(data['html']);
-    nodes.push(data['title']);
-    updateNodes();
-    end_node = data['end_node'];
-    var peerid = data['peerid'];
-    peer = new Peer(peerid, {key: 'zmnov4fauusxajor', debug: true});
-    peer.on('connection', connect);
-    peer.on('close', close);
-    $('.goal-node').text("Goal: " + data['end_node']);
-    if (data['partnerid']) {
-        end_title = data['end_title'];
-        var c = peer.connect(data['partnerid']);
-        console.log(c);
-        console.log('connecting');
-        c.on('open', function() {
-            console.log('con conn');
-            connect(c);
+                });
+            },
+            error: function(e) {
+                console.log('something went wrong server side');
+            }
         });
-        c.on('error', function(err) {
-            console.log(err);
-        });
-        peer.on('connection', connect);
     }
-    $("a").click(function(e) {
-        disableClicks(e);
-        if ($(this).hasClass('play-game')) {
-            scrollToTop();
-            $('.play-game').remove();
-            return;
-        }
-        // We don't have a partner yet!
-        // Tell the user we couldn't do anything.
-        if (conn === undefined) {
-            $('.flash-area').append("<div class='flash'>You're not connected to a partner! We're working on connecting you.</div>");
-            $('.flash').fadeOut(4000, function() {
-                console.log('flash message faded out');
-            });
-            return;
-        }
-        // If we haven't clicked on this before
-        if ($.inArray($(this).attr('href'), nodes) === -1) {
-            linkClicked(e, $(this).attr('href'), true);
-            nodes.push($(this).attr('href'));
+
+    $('.back').click(function(e) {
+        console.log('hi')
+        if (nodes.length > 0) {
+            // Remove the node we are currently on
+            nodes.pop();
+            linkClicked(e, nodes[nodes.length - 1], true);
             updateNodes();
+            depth -= 2;
+            console.log('depth is ' + depth);
+            $('.depth-num').text(depth);
+            conn.on('open', function() {
+                updateDepth(depth, true);
+            });
         }
     });
-};
 
-var terminatePeer = function() {
-    $.ajax({
-        url: "quit",
-        type: "POST",
-        data: peer.id,
-        success: function() {
-            console.log('terminated connection');
-        },
-        error: errFn
-    });
-};
+    var disableClicks = function(e) {
+        e.preventDefault();
+    };
 
-var errFn = function(err) {
-    console.log("Received error: " + err);
-};
+    // When a link is clicked we want to move to the new link and
+    // increment our depth
+    var linkClicked = function(e, loc, update) {
+        if (update) {
+            depth++;
+            updateDepth(depth, true);
+            if (loc == end_node) {
+                displayWin();
+            }
+        }
+        console.log('loc is ' + loc);
+        $.ajax({
+            url: "wiki-html",
+            type: "POST",
+            data: loc,
+            success: function(data) {
+                $('.wiki-container').html(data);
+                $("a").click(function(e) {
+                    disableClicks(e);
+                    scrollToTop();
+                    if ($.inArray($(this).attr('href'), nodes) === -1) {
+                        linkClicked(e, $(this).attr('href'), true);
+                        if (update) {
+                            nodes.push($(this).attr('href'));
+                            updateNodes();
+                        }
+                    }
+                });
+                $(".node-list li").click(nodeItemClicked);
+            },
+            error: function(e) {
+                console.log('something went wrong server side');
+            }
+        });
+    };
+
+    var nodeItemClicked = function(e) {
+        console.log($(this).index() + ' is the index');
+        var nodeClicked = $(this).children('a').eq(0).attr('href');
+        console.log(nodeClicked);
+        $.ajax({
+            url: "get-html",
+            type: "POST",
+            data: nodeClicked,
+            success: function(data) {
+                console.log(data);
+                $('.wiki-container').html(data);
+                $("a").click(function(e) {
+                    disableClicks(e);
+                    scrollToTop();
+                    // If we haven't clicked on this before
+                    if ($.inArray($(this).attr('href'), nodes) === -1) {
+                        linkClicked(e, $(this).attr('href'), true);
+                        nodes.push($(this).attr('href'));
+                        updateNodes();
+                    }
+                });
+                $(".node-list li").click(nodeItemClicked);
+            },
+            error: function(e) {
+                console.log('something went wrong server side');
+            }
+        });
+        depth = $(this).index();
+        updateDepth(depth, true);
+        nodes.splice(depth + 1, nodes.length - depth);
+        updateNodes();
+    };
 
 
-initGame();
+    var displayWin = function() {
+        var data = {"oppWin": nodes};
+        conn.send(data);
+        alert('You made it in ' + depth + ' moves!');
+    };
+});

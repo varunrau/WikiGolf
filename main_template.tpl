@@ -4,7 +4,6 @@
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="main.js"></script>
         <script src="http://cdn.peerjs.com/0/peer.js"></script>
-        <script src="peer.js"></script>
         <script src="bootstrap/bootstrap.js"></script>
         <script src="style.js"></script>
         <script src="underscore-min.js"></script>
@@ -52,7 +51,7 @@
                     <a class="brand" href="#">WikiGolf</a>
                     <ul class="nav">
                         <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#">Link</a></li>
+                        <li><a href="#">The API</a></li>
                         <li><a href="#">Link</a></li>
                     </ul>
                 </div>
@@ -83,7 +82,7 @@
                         <span class='opp-depth-num'></span>
                     </div>
                 </div>
-                <span class='loading-icon'>Loading...</span>
+                <div class='loading-icon'><img src="loading.gif"></img></div>
             </div>
         </div>
         <div class="modal hide" id="noPartners">

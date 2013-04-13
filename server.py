@@ -34,6 +34,7 @@ def wiki_html():
         data['end_node'] = partner.end_node
         data['partnerid'] = partner.getId()
         data['end_title'] = partner.end_title
+        print partner.getId() + " is connecting to " + new_peer
         print 'connecting to partner'
     else:
         start_title = get_random_wiki()
@@ -162,8 +163,7 @@ def javascripts(filename):
 def stylesheets(filename):
     return static_file(filename, root='static/css')
 
-
-@get('/<filename:re:.*\.png>')
+@get('/<filename:re:.*\.(jpg|png|gif|ico)>')
 def images(filename):
     return static_file(filename, root='static/images')
 
