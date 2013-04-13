@@ -137,6 +137,17 @@ $(document).ready(function() {
                     end_node = data["end_node"];
                     setTimeout(function() {
                         if ($(".play-game").length > 0) {
+                            $.ajax({
+                                url: "quit",
+                                type: "POST",
+                                data: peerid,
+                                success: function() {
+                                    console.log("Successfully dequeued from server");
+                                },
+                                error: function() {
+                                    console.log("fuck");
+                                }
+                            })
                             $("#noPartners").modal();
                         }
                     }, 60000);
