@@ -14,6 +14,7 @@ $(document).ready(function() {
         $("body").css("overflow", "hidden");
     };
 
+    // Deprecated
     var toggleScrolling = function() {
         if (scrolling) {
             $("body").css("overflow", "visible");
